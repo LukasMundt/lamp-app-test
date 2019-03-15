@@ -1,0 +1,2 @@
+This app comes with an SFTP server to upload files, a MySQL database, redis cache and ability to send emails.
+Instructions will be shown when visiting the app until an index file (index.html or index.php) is uploaded, afterwards the credentials can be viewed through SFTP, opening the file `/app/data/credentials.txt`
