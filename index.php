@@ -47,18 +47,6 @@
 
 <br/>
 
-<h2>MySQL credentials</h2>
-<p>Use the following environment variables in the PHP code to access MySQL:</p>
-<pre>
-getenv("MYSQL_HOST")
-getenv("MYSQL_PORT")
-getenv("MYSQL_USERNAME")
-getenv("MYSQL_PASSWORD")
-getenv("MYSQL_DATABASE")
-</pre>
-
-<br/>
-
 <h2>SFTP Transfer</h2>
 <p>
   You can SFTP files to the <b>public</b> folder using  <a href="https://cyberduck.io/" target="_blank">Cyberduck</a>,
@@ -74,7 +62,34 @@ sftp -P 2222 surfer.nebulon.info:public/
 
 <br/>
 
-<h2>phpMyAdmin access</h2>
+<h2>MySQL Credentials</h2>
+<p>Use the following environment variables in the PHP code to access MySQL:</p>
+<table>
+  <tr>
+    <td>MYSQL_HOST</td>
+    <td><?php echo getenv("MYSQL_HOST") ?></td>
+  </tr>
+  <tr>
+    <td>MYSQL_PORT</td>
+    <td><?php echo getenv("MYSQL_PORT") ?></td>
+  </tr>
+  <tr>
+    <td>MYSQL_USERNAME</td>
+    <td><?php echo getenv("MYSQL_USERNAME") ?></td>
+  </tr>
+  <tr>
+    <td>MYSQL_PASSWORD</td>
+    <td><?php echo getenv("MYSQL_PASSWORD") ?></td>
+  </tr>
+  <tr>
+    <td>MYSQL_DATABASE</td>
+    <td><?php echo getenv("MYSQL_DATABASE") ?></td>
+  </tr>
+</table>
+
+<br/>
+
+<h2>phpMyAdmin Access</h2>
 <p>
   You can access phpMyAdmin using your Cloudron credentials <a href="/phpmyadmin" target="_blank">here</a>.
 </p>
@@ -86,16 +101,74 @@ sftp -P 2222 surfer.nebulon.info:public/
 
 <h2>Cron</h2>
 <p>
-  Just put a file called crontab to the directory /app/data and it will picked up at next app restart. It has to be in the cron syntax without username
-  and must end with a newline. For example, the following crontab updates feeds every hour:
+  Put a file called <code>crontab</code> into the directory <code>/app/data</code> and it will picked up at next app restart.
+  It has to be in the cron syntax without username and must end with a newline.
+  For example, the following crontab updates feeds every hour:
 </p>
 <pre>
 0 * * * * php /app/code/update.php --feeds
-
 </pre>
 <p>
-  Commands are executed as the user www-data. See <a href="https://linux.die.net/man/5/crontab">manpage</a> for a description of the file.
+  Commands are executed as the user www-data. Generate cron patterns via <a href="http://www.crontabgenerator.com/">crontabgenerator</a>.
 </p>
+
+<br/>
+
+<h2>Sendmail Credentials</h2>
+<p>Use the following environment variables in the PHP code to send email:</p>
+<table>
+  <tr>
+    <td>MAIL_SMTP_SERVER</td>
+    <td><?php echo getenv("MAIL_SMTP_SERVER") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_SMTP_PORT</td>
+    <td><?php echo getenv("MAIL_SMTP_PORT") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_SMTPS_PORT</td>
+    <td><?php echo getenv("MAIL_SMTPS_PORT") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_SMTP_USERNAME</td>
+    <td><?php echo getenv("MAIL_SMTP_USERNAME") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_SMTP_PASSWORD</td>
+    <td><?php echo getenv("MAIL_SMTP_PASSWORD") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_FROM</td>
+    <td><?php echo getenv("MAIL_FROM") ?></td>
+  </tr>
+  <tr>
+    <td>MAIL_DOMAIN</td>
+    <td><?php echo getenv("MAIL_DOMAIN") ?></td>
+  </tr>
+</table>
+
+<br/>
+
+<h2>Redis Credentials</h2>
+<p>Use the following environment variables in the PHP code to connect to Redis:</p>
+<table>
+  <tr>
+    <td>REDIS_URL</td>
+    <td><?php echo getenv("REDIS_URL") ?></td>
+  </tr>
+  <tr>
+    <td>REDIS_HOST</td>
+    <td><?php echo getenv("REDIS_HOST") ?></td>
+  </tr>
+  <tr>
+    <td>REDIS_PORT</td>
+    <td><?php echo getenv("REDIS_PORT") ?></td>
+  </tr>
+  <tr>
+    <td>REDIS_PASSWORD</td>
+    <td><?php echo getenv("REDIS_PASSWORD") ?></td>
+  </tr>
+</table>
 
 <br/>
 
