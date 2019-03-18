@@ -80,6 +80,33 @@ else
     echo "Imported crontab"
 fi
 
+echo "=> Creating credentials.txt"
+sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
+    -e "s,MYSQL_PORT,${MYSQL_PORT}," \
+    -e "s,MYSQL_USERNAME,${MYSQL_USERNAME}," \
+    -e "s,MYSQL_PASSWORD,${MYSQL_PASSWORD}," \
+    -e "s,MYSQL_DATABASE,${MYSQL_DATABASE}," \
+    -e "s,MYSQL_URL,${MYSQL_URL}," \
+    -e "s,MAIL_SMTP_SERVER,${MAIL_SMTP_SERVER}," \
+    -e "s,MAIL_SMTP_PORT,${MAIL_SMTP_PORT}," \
+    -e "s,MAIL_SMTPS_PORT,${MAIL_SMTPS_PORT}," \
+    -e "s,MAIL_SMTP_USERNAME,${MAIL_SMTP_USERNAME}," \
+    -e "s,MAIL_SMTP_PASSWORD,${MAIL_SMTP_PASSWORD}," \
+    -e "s,MAIL_FROM,${MAIL_FROM}," \
+    -e "s,MAIL_DOMAIN,${MAIL_DOMAIN}," \
+    -e "s,REDIS_HOST,${REDIS_HOST}," \
+    -e "s,REDIS_PORT,${REDIS_PORT}," \
+    -e "s,REDIS_PASSWORD,${REDIS_PASSWORD}," \
+    -e "s,REDIS_URL,${REDIS_URL}," \
+    -e "s,LDAP_SERVER,${LDAP_SERVER}," \
+    -e "s,LDAP_PORT,${LDAP_PORT}," \
+    -e "s|LDAP_USERS_BASE_DN|${LDAP_USERS_BASE_DN}|" \
+    -e "s|LDAP_GROUPS_BASE_DN|${LDAP_GROUPS_BASE_DN}|" \
+    -e "s|LDAP_BIND_DN|${LDAP_BIND_DN}|" \
+    -e "s,LDAP_BIND_PASSWORD,${LDAP_BIND_PASSWORD}," \
+    -e "s,LDAP_URL,${LDAP_URL}," \
+    /app/code/credentials.template > /app/data/credentials.txt
+
 chown -R www-data:www-data /app/data /run/apache2 /run/proftpd /run/app
 
 echo "Starting supervisord"
