@@ -40,19 +40,23 @@ else
     fi
 fi
 
-if [[ ! -f "/app/data/sftpd/ssh_host_ed25519_key" ]]; then
+# we move the sftpd to .sftp to follow unix dot file convention
+# TODO this can be removed in future versions (added on Mar 18th 2019)
+mv -f /app/data/sftpd /app/data/.sftpd | true
+
+if [[ ! -f "/app/data/.sftpd/ssh_host_ed25519_key" ]]; then
     echo "Generating ssh host keys"
-    mkdir -p /app/data/sftpd
-    ssh-keygen -qt rsa -N '' -f /app/data/sftpd/ssh_host_rsa_key
-    ssh-keygen -qt dsa -N '' -f /app/data/sftpd/ssh_host_dsa_key
-    ssh-keygen -qt ecdsa -N '' -f /app/data/sftpd/ssh_host_ecdsa_key
-    ssh-keygen -qt ed25519 -N '' -f /app/data/sftpd/ssh_host_ed25519_key
+    mkdir -p /app/data/.sftpd
+    ssh-keygen -qt rsa -N '' -f /app/data/.sftpd/ssh_host_rsa_key
+    ssh-keygen -qt dsa -N '' -f /app/data/.sftpd/ssh_host_dsa_key
+    ssh-keygen -qt ecdsa -N '' -f /app/data/.sftpd/ssh_host_ecdsa_key
+    ssh-keygen -qt ed25519 -N '' -f /app/data/.sftpd/ssh_host_ed25519_key
 else
     echo "Reusing existing host keys"
 fi
 
-chmod 0600 /app/data/sftpd/*_key
-chmod 0644 /app/data/sftpd/*.pub
+chmod 0600 /app/data/.sftpd/*_key
+chmod 0644 /app/data/.sftpd/*.pub
 
 ## Generate apache config. PMA is disabled based on SFTP config
 if [[ "${disable_sftp}" == "true" ]]; then
