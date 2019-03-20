@@ -34,6 +34,11 @@
       width: 100%;
     }
 
+    .table {
+      border-style: solid;
+      border-width: 1px;
+    }
+
     .h, .e {
       background-color: white !important;
     }
@@ -43,7 +48,19 @@
 </head>
 <body>
 
+<br/>
+
 <h1>Cloudron LAMP App</h1>
+
+<br/>
+
+<h2>Overview</h2>
+<p>
+  This page is a placeholder page showing initial information on how to use the LAMP stack.
+  Once you have read through this document, please remove it via sftp.<br/>
+  <br/>
+  <b>The credentials shown here are only valid to be used from scripts within the app on your Cloudron locally!</b>
+</p>
 
 <br/>
 
@@ -54,11 +71,12 @@
   (use your cloudron credentials to authenticate).
 </p>
 <p>
+  Using the sftp commandline tool for Linux, the command looks as follows:
+  <pre>sftp -P 2222 surfer.nebulon.info:public/</pre>
+</p>
+<p>
   We recommend disabling SFTP access (from Cloudron's configuration panel) once you have uploaded your code.
 </p>
-<pre>
-sftp -P 2222 surfer.nebulon.info:public/
-</pre>
 
 <br/>
 
@@ -184,13 +202,6 @@ sftp -P 2222 surfer.nebulon.info:public/
 <p>Read more about Cloudron addons and how to use them <a href="https://cloudron.io/developer/addons/" target="_blank">here</a>.</p>
 
 <br/>
-
-<h2>PHP Setup</h2>
-<?php
-
-echo phpInfo();
-
-?>
 
 </body>
 </html>
