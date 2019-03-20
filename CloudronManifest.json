@@ -13,7 +13,9 @@
   "icon": "logo.png",
   "addons": {
     "mysql": {},
-    "localstorage": {},
+    "localstorage": {
+	    "ftp": 33
+    },
     "sendmail": {},
     "redis": {},
     "ldap": {}
