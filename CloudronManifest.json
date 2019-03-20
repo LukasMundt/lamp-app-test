@@ -20,17 +20,10 @@
     "redis": {},
     "ldap": {}
   },
-  "tcpPorts": {
-    "SFTP_PORT": {
-      "title": "SFTP Port",
-      "description": "SFTP Port. Disabling SFTP also disables phpMyAdmin",
-      "defaultValue": 2222
-    }
-  },
   "tags": [ "apache", "php", "mysql", "hosting", "lamp", "stacks", "development" ],
   "mediaLinks": [ "https://raw.githubusercontent.com/cloudron-io/lamp-app/master/medialinks/medialink_0.jpg" ],
   "changelog": "file://CHANGELOG",
   "postInstallMessage": "file://POSTINSTALL.md",
-  "minBoxVersion": "1.8.5",
+  "minBoxVersion": "3.6.0",
   "documentationUrl": "https://cloudron.io/documentation/apps/lamp/"
 }
