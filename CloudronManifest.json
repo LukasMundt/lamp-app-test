@@ -14,7 +14,9 @@
   "addons": {
     "mysql": {},
     "localstorage": {
-	    "ftp": 33
+      "ftp": {
+        "uid": 33
+      }
     },
     "sendmail": {},
     "redis": {},
