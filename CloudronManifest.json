@@ -15,7 +15,8 @@
     "mysql": {},
     "localstorage": {
       "ftp": {
-        "uid": 33
+        "uid": 33,
+        "uname": "www-data"
       }
     },
     "sendmail": {},
