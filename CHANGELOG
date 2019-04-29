@@ -79,7 +79,8 @@
 * Update PHP to 7.2.15
 * Make composer usable by making www-data a normal user
 
-[1.6.3]
+[1.7.0]
 * Update the index placeholder page
 * Add postinstall message
+* Use Cloudron platform sftp server
 
