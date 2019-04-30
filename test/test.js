@@ -1,5 +1,11 @@
 #!/usr/bin/env node
 
+/* jslint node:true */
+/* global it:false */
+/* global describe:false */
+/* global before:false */
+/* global after:false */
+
 'use strict';
 
 require('chromedriver');
@@ -7,7 +13,6 @@ require('chromedriver');
 var execSync = require('child_process').execSync,
     expect = require('expect.js'),
     fs = require('fs'),
-    net = require('net'),
     path = require('path'),
     superagent = require('superagent'),
     util = require('util'),
@@ -28,6 +33,10 @@ describe('Application life cycle test', function () {
     this.timeout(0);
 
     var server, browser = new Builder().forBrowser('chrome').build();
+    var LOCATION = 'test';
+    var TEST_TIMEOUT = 50000;
+    var app;
+    var apiEndpoint;
 
     before(function (done) {
         var seleniumJar= require('selenium-server-standalone-jar');
@@ -44,21 +53,25 @@ describe('Application life cycle test', function () {
         done();
     });
 
-    var LOCATION = 'test';
-    var TEST_TIMEOUT = 50000;
-    var app;
-
     function waitForElement(elem) {
         return browser.wait(until.elementLocated(elem), TEST_TIMEOUT).then(function () {
             return browser.wait(until.elementIsVisible(browser.findElement(elem)), TEST_TIMEOUT);
         });
     }
 
+    function getAppInfo(callback) {
+        var inspect = JSON.parse(execSync('cloudron inspect'));
+        apiEndpoint = inspect.apiEndpoint;
+
+        app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
+        expect(app).to.be.an('object');
+
+        callback();
+    }
+
     function welcomePage(callback) {
         browser.get('https://' + app.fqdn).then(function () {
             return waitForElement(by.xpath('//*[text()="Cloudron LAMP App"]'));
-        }).then(function () {
-            return waitForElement(by.xpath('//h1[contains(text(), "7.2.15-0ubuntu0.18.04.1")]'));
         }).then(function () {
             callback();
         });
@@ -75,7 +88,7 @@ describe('Application life cycle test', function () {
     }
 
     function checkIonCube(callback) {
-        browser.get('https://' + app.fqdn).then(function () {
+        browser.get('https://' + app.fqdn + '/test.php').then(function () {
             return waitForElement(by.xpath('//td[contains(text(), "ionCube Loader")]'));
             // return waitForElement(by.xpath('//*[contains(text(), "Intrusion&nbsp;Protection&nsbp;from&nbsp;ioncube24.com")]'));
         }).then(function () {
@@ -108,10 +121,10 @@ describe('Application life cycle test', function () {
         this.timeout(60000 * 2);
 
         fs.writeFileSync('/tmp/crontab', '* * * * * echo -n "$MYSQL_HOST" > /app/data/public/cron\n', 'utf8');
-        execSync('cloudron push /tmp/crontab /app/data/crontab');
+        execSync(`cloudron push --app ${app.id} /tmp/crontab /app/data/crontab`);
         fs.unlinkSync('/tmp/crontab');
 
-        execSync('cloudron restart --wait');
+        execSync(`cloudron restart --wait --app ${app.id}`);
 
         console.log('Waiting for crontab to trigger');
 
@@ -132,114 +145,82 @@ describe('Application life cycle test', function () {
         execSync('cloudron build', { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
     });
 
-    it('install app', function () {
-        execSync('cloudron install --new --wait --location ' + LOCATION, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
-
-    it('can get app information', function () {
-        var inspect = JSON.parse(execSync('cloudron inspect'));
-
-        app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
-
-        expect(app).to.be.an('object');
-    });
-
-    it('can view welcome page', welcomePage);
-    it('can access ioncube', checkIonCube);
-    it('can upload file with sftp', function () {
-        // remove from known hosts in case this test was run on other apps with the same domain already
-        // if the tests fail here you want below in ~/.ssh/config
-        // Host test.cloudron.xyz
-        //     StrictHostKeyChecking no
-        //     HashKnownHosts no
-        console.log('If this test fails, see the comment above this log message');
-        execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-        execSync(util.format('lftp sftp://%s:%s@%s:%s  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, process.env.PASSWORD, app.fqdn, app.portBindings.SFTP_PORT));
-    });
-    it('can get uploaded file', uploadedFileExists);
-    it('can access phpmyadmin', checkPhpMyAdmin);
-    it('executes cron tasks', checkCron);
-
-    it('backup app', function () {
-        execSync('cloudron backup create --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
-
-    it('restore app', function () {
-        execSync('cloudron restore --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
-
-    it('can get uploaded file', uploadedFileExists);
-
-    it('move to different location', function () {
-        browser.manage().deleteAllCookies();
-        execSync('cloudron configure --wait --location ' + LOCATION + '2 --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-        var inspect = JSON.parse(execSync('cloudron inspect'));
-        app = inspect.apps.filter(function (a) { return a.location === LOCATION + '2'; })[0];
-        expect(app).to.be.an('object');
-    });
-
-    it('can get uploaded file', uploadedFileExists);
-    it('can access phpmyadmin', checkPhpMyAdmin);
-    it('can access ioncube', checkIonCube);
-
-    // disable SFTP
-    it('can disable sftp', function () {
-        execSync('cloudron configure --wait -p SFTP_PORT=', { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
-    it('(nosftp) can view welcome page', welcomePage);
-    it('(nosftp cannot upload file with sftp', function (done) {
-        var client = new net.Socket();
-        client.setTimeout(10000);
-
-        client.connect(2222, app.fqdn, function() {
-            client.destroy();
-            done(new Error('Connected'));
+    describe('installation and configuration', function () {
+        it('install app', function () {
+            execSync(`cloudron install --new --wait --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
         });
 
-        client.on('timeout', function () { client.destroy(); done(); }); // the packet just got dropped (good)
+        it('can get app information', getAppInfo);
+        it('can view welcome page', welcomePage);
+        it('can upload file with sftp', function () {
+            // remove from known hosts in case this test was run on other apps with the same domain already
+            // if the tests fail here you want below in ~/.ssh/config
+            // Host my.cloudron.xyz
+            //     StrictHostKeyChecking no
+            //     HashKnownHosts no
+            console.log('If this test fails, see the comment above this log message');
+            execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
+            execSync(util.format('lftp sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint));
+        });
+        it('can get uploaded file', uploadedFileExists);
+        it('can access ioncube', checkIonCube);
+        it('can access phpmyadmin', checkPhpMyAdmin);
+        it('executes cron tasks', checkCron);
 
-        client.on('error', function (error) {
-            client.destroy();
-            done(new Error('Should have got timeout but got error:' + error.message));
+        it('backup app', function () {
+            execSync(`cloudron backup create --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+        });
+
+        it('restore app', function () {
+            execSync(`cloudron restore --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+        });
+
+        it('can get uploaded file', uploadedFileExists);
+
+        it('move to different location', function () {
+            browser.manage().deleteAllCookies();
+            execSync(`cloudron configure --wait --location ${LOCATION}2 --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            var inspect = JSON.parse(execSync('cloudron inspect'));
+            app = inspect.apps.filter(function (a) { return a.location === LOCATION + '2'; })[0];
+            expect(app).to.be.an('object');
+        });
+
+        it('can get uploaded file', uploadedFileExists);
+        it('can access phpmyadmin', checkPhpMyAdmin);
+        it('can access ioncube', checkIonCube);
+
+        it('uninstall app', function () {
+            execSync(`cloudron uninstall --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
         });
     });
 
-    it('(nosftp) cannot access phpmyadmin', function (done) {
-        superagent.get('https://' + app.fqdn + '/phpmyadmin').end(function (error, result) {
-            if (error && !error.response) return done(error); // network error
-
-            if (result.statusCode !== 404) return done('Expecting 404 error');
-
-            done();
+    describe('update', function () {
+        // test update
+        it('can install app', function () {
+            execSync(`cloudron install --new --wait --appstore-id lamp.cloudronapp --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            var inspect = JSON.parse(execSync('cloudron inspect'));
+            app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
+            expect(app).to.be.an('object');
         });
-    });
 
-    it('uninstall app', function () {
-        execSync('cloudron uninstall --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
+        it('can get app information', getAppInfo);
+        it('can view welcome page', welcomePage);
+        it('can upload file with sftp', function () {
+            // remove from known hosts in case this test was run on other apps with the same domain already
+            // if the tests fail here you want to set "HashKnownHosts no" in ~/.ssh/config
+            execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
+            execSync(util.format('lftp sftp://%s:%s@%s:%s  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, process.env.PASSWORD, app.fqdn, app.portBindings.SFTP_PORT));
+        });
 
-    // test update
-    it('can install app', function () {
-        execSync('cloudron install --new --wait --appstore-id lamp.cloudronapp --location ' + LOCATION, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-        var inspect = JSON.parse(execSync('cloudron inspect'));
-        app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
-        expect(app).to.be.an('object');
-    });
-    it('can upload file with sftp', function () {
-        // remove from known hosts in case this test was run on other apps with the same domain already
-        // if the tests fail here you want to set "HashKnownHosts no" in ~/.ssh/config
-        execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-        execSync(util.format('lftp sftp://%s:%s@%s:%s  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, process.env.PASSWORD, app.fqdn, app.portBindings.SFTP_PORT));
-    });
+        it('can update', function () {
+            execSync(`cloudron install --wait --app ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+        });
+        it('can get uploaded file', uploadedFileExists);
+        it('can access phpmyadmin', checkPhpMyAdmin);
+        it('can access ioncube', checkIonCube);
 
-    it('can update', function () {
-        execSync('cloudron install --wait --app ' + LOCATION, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
-    });
-    it('can get uploaded file', uploadedFileExists);
-    it('can access phpmyadmin', checkPhpMyAdmin);
-    it('can access ioncube', checkIonCube);
-
-    it('uninstall app', function () {
-        execSync('cloudron uninstall --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+        it('uninstall app', function () {
+            execSync(`cloudron uninstall --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+        });
     });
 });
