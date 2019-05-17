@@ -56,10 +56,11 @@
 
 <h2>Overview</h2>
 <p>
+  <div>
   This page is a placeholder page showing initial information on how to use the LAMP stack.
   This page will get overwritten, when you upload your app's index.php or index.html. You can always
   access these credentials again from the file <code>credentials.txt</code> with <a target="_blank" href="https://cloudron.io/documentation/apps/#ftp-access">SFTP</a>.
-  <br/>
+  <div>
   <br/>
   <b>The credentials shown here can only be used from within your app. They will not work from outside the Cloudron!</b>
 </p>
