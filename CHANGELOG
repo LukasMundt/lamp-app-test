@@ -84,3 +84,7 @@
 * Add postinstall message
 * Use Cloudron platform sftp server
 
+[1.8.0]
+* Update postinstall message
+* Better description
+
