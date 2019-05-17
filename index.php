@@ -57,9 +57,11 @@
 <h2>Overview</h2>
 <p>
   This page is a placeholder page showing initial information on how to use the LAMP stack.
-  Once you have read through this document, please remove it via sftp.<br/>
+  This page will get overwritten, when you upload your app's index.php or index.html. You can always
+  access these credentials again from the file <code>credentials.txt</code> with <a target="_blank" href="https://cloudron.io/documentation/apps/#ftp-access">SFTP</a>.
   <br/>
-  <b>The credentials shown here are only valid to be used from scripts within the app on your Cloudron locally!</b>
+  <br/>
+  <b>The credentials shown here can only be used from within your app. They will not work from outside the Cloudron!</b>
 </p>
 
 <br/>
@@ -168,19 +170,6 @@
     <td><?php echo getenv("REDIS_PASSWORD") ?></td>
   </tr>
 </table>
-
-<br/>
-
-<h2>Addons</h2>
-<p>The app is configured to have access to the following Cloudron addons:</p>
-<ul>
-  <li><a href="https://cloudron.io/developer/addons/#mysql" target="_blank">mysql</a></li>
-  <li><a href="https://cloudron.io/developer/addons/#localstorage" target="_blank">localstorage</a></li>
-  <li><a href="https://cloudron.io/developer/addons/#sendmail" target="_blank">sendmail</a></li>
-  <li><a href="https://cloudron.io/developer/addons/#redis" target="_blank">redis</a></li>
-  <li><a href="https://cloudron.io/developer/addons/#ldap" target="_blank">ldap</a></li>
-</ul>
-<p>Read more about Cloudron addons and how to use them <a href="https://cloudron.io/developer/addons/" target="_blank">here</a>.</p>
 
 <br/>
 
