@@ -97,13 +97,18 @@ describe('Application life cycle test', function () {
     }
 
     function checkPhpMyAdmin(callback) {
+        execSync(`cloudron pull --app ${app.id} /app/data/phpmyadmin_login.txt /tmp/phpmyadmin_login.txt`);
+        // know your file structure !
+        const PHPMYADMIN_PASSWORD = fs.readFileSync('/tmp/phpmyadmin_login.txt', 'utf8').split('\n')[6].split(':')[1].trim();
+        fs.unlinkSync('/tmp/phpmyadmin_login.txt');
+
         superagent.get('https://' + app.fqdn + '/phpmyadmin').end(function (error, result) {
             if (error && !error.response) return callback(error); // network error
 
             if (result.statusCode !== 401) return callback('Expecting 401 error');
 
             superagent.get('https://' + app.fqdn + '/phpmyadmin')
-                .auth(process.env.USERNAME, process.env.PASSWORD)
+                .auth('admin', PHPMYADMIN_PASSWORD)
                 .end(function (error, result) {
                 if (error) return callback(error);
 
