@@ -88,3 +88,7 @@
 * Update postinstall message
 * Better description
 
+[2.0.0]
+* Remove LDAP addon. Together with the SFTP addon, LDAP introduces a security issue where normal users can dump admin passwords.
+* phpMyAdmin now uses a htpasswd file
+
