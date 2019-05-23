@@ -3,3 +3,4 @@ Instructions will be shown when visiting the app until an index file (index.html
 is uploaded. The credentials are stored in a file named  `credentials.txt`
 ([SFTP](https://cloudron.io/documentation/apps/#ftp-access) or [Web Terminal](https://cloudron.io/documentation/apps/#web-terminal))
 
+For phpMyAdmin access see the file `phpmyadmin_login.txt`
