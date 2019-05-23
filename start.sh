@@ -21,12 +21,6 @@ fi
 ## TODO remove this line in later versions
 rm -rf /app/data/sftpd
 
-## Generate apache config
-sed -e "s@AuthLDAPURL .*@AuthLDAPURL ${LDAP_URL}/${LDAP_USERS_BASE_DN}?username??(objectclass=user)@" \
-    -e "s@AuthLDAPBindDN .*@AuthLDAPBindDN ${LDAP_BIND_DN}@" \
-    -e "s@AuthLDAPBindPassword .*@AuthLDAPBindPassword ${LDAP_BIND_PASSWORD}@" \
-    /app/code/lamp.conf > /run/apache2/lamp.conf
-
 ## hook for custom start script in /app/data/run.sh
 if [ -f "/app/data/run.sh" ]; then
     /bin/bash /app/data/run.sh
@@ -40,6 +34,14 @@ if ! (env; cat /app/data/crontab; echo -e '\nMAILTO=""') | crontab -u www-data -
     echo "Error importing crontab. Continuing anyway"
 else
     echo "Imported crontab"
+fi
+
+# phpMyAdmin auth file
+if [[ ! -f /app/data/.phpmyadminauth ]]; then
+    echo "=> Generating phpMyAdmin authentication file"
+    PASSWORD=`pwgen -1 16`
+    htpasswd -cb /app/data/.phpmyadminauth admin "${PASSWORD}"
+    sed -e "s,PASSWORD,${PASSWORD}," /app/code/phpmyadmin_login.template > /app/data/phpmyadmin_login.txt
 fi
 
 echo "=> Creating credentials.txt"
@@ -60,13 +62,6 @@ sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
     -e "s,REDIS_PORT,${REDIS_PORT}," \
     -e "s,REDIS_PASSWORD,${REDIS_PASSWORD}," \
     -e "s,REDIS_URL,${REDIS_URL}," \
-    -e "s,LDAP_SERVER,${LDAP_SERVER}," \
-    -e "s,LDAP_PORT,${LDAP_PORT}," \
-    -e "s|LDAP_USERS_BASE_DN|${LDAP_USERS_BASE_DN}|" \
-    -e "s|LDAP_GROUPS_BASE_DN|${LDAP_GROUPS_BASE_DN}|" \
-    -e "s|LDAP_BIND_DN|${LDAP_BIND_DN}|" \
-    -e "s,LDAP_BIND_PASSWORD,${LDAP_BIND_PASSWORD}," \
-    -e "s,LDAP_URL,${LDAP_URL}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
 chown -R www-data:www-data /app/data /run/apache2 /run/app

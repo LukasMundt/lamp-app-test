@@ -42,12 +42,10 @@ RUN apt-get update && apt-get install -y php libapache2-mod-php crudini \
 RUN rm /etc/apache2/sites-enabled/*
 RUN sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf
 COPY apache/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-
-RUN a2disconf other-vhosts-access-log
-ADD apache/lamp.conf /app/code/lamp.conf
-RUN ln -s /run/apache2/lamp.conf /etc/apache2/sites-enabled/lamp.conf
+COPY apache/lamp.conf /etc/apache2/sites-enabled/lamp.conf
 RUN echo "Listen 80" > /etc/apache2/ports.conf
-RUN a2enmod rewrite authnz_ldap headers rewrite expires cache
+RUN a2disconf other-vhosts-access-log
+RUN a2enmod rewrite headers rewrite expires cache
 
 # configure mod_php
 RUN crudini --set /etc/php/7.2/apache2/php.ini PHP upload_max_filesize 64M && \
@@ -94,7 +92,7 @@ ADD supervisor/ /etc/supervisor/conf.d/
 RUN sed -e 's,^logfile=.*$,logfile=/run/supervisord.log,' -i /etc/supervisor/supervisord.conf
 
 # add code
-COPY start.sh index.php crontab.template credentials.template /app/code/
+COPY start.sh index.php crontab.template credentials.template phpmyadmin_login.template /app/code/
 
 # lock www-data but allow su - www-data to work
 RUN passwd -l www-data && usermod --shell /bin/bash --home /app/data www-data

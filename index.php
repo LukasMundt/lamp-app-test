@@ -96,7 +96,7 @@
 
 <h2>phpMyAdmin Access</h2>
 <p>
-  You can access phpMyAdmin using your Cloudron credentials <a href="/phpmyadmin" target="_blank">here</a>.
+  It is installed <a href="/phpmyadmin" target="_blank">here</a>. For login credentials see phpmyadmin_login.txt via SFTP.
 </p>
 
 <br/>
