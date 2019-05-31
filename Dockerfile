@@ -5,6 +5,7 @@ WORKDIR /app/code
 
 RUN apt-get update && apt-get install -y php libapache2-mod-php crudini \
     php-redis \
+    php-apcu \
     php-bcmath \
     php-bz2 \
     php-curl \
@@ -31,7 +32,6 @@ RUN apt-get update && apt-get install -y php libapache2-mod-php crudini \
     php-validate \
     php-xml \
     php-xml-svg \
-    php-yac \
     php-zip \
     cron \
     apache2-dev \
