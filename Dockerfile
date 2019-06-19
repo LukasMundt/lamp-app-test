@@ -85,7 +85,8 @@ RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
     cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20170718 && \
     rm -rf /tmp/ioncube && \
-    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/apache2/conf.d/00-ioncube.ini
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/apache2/conf.d/00-ioncube.ini && \
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/cli/conf.d/00-ioncube.ini
 
 # configure supervisor
 ADD supervisor/ /etc/supervisor/conf.d/
