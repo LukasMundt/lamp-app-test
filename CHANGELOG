@@ -96,3 +96,6 @@
 * Use APCu instead of YAC
 * Update post install docs
 
+[2.0.2]
+* Load ionCube plugin with PHP CLI
+
