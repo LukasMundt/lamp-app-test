@@ -89,7 +89,7 @@ describe('Application life cycle test', function () {
 
     function checkIonCube(callback) {
         browser.get('https://' + app.fqdn + '/test.php').then(function () {
-            return waitForElement(by.xpath('//td[contains(text(), "ionCube Loader")]'));
+            return waitForElement(by.xpath('//a[contains(text(), "ionCube Loader")]'));
             // return waitForElement(by.xpath('//*[contains(text(), "Intrusion&nbsp;Protection&nsbp;from&nbsp;ioncube24.com")]'));
         }).then(function () {
             callback();
@@ -163,9 +163,10 @@ describe('Application life cycle test', function () {
             // Host my.cloudron.xyz
             //     StrictHostKeyChecking no
             //     HashKnownHosts no
-            console.log('If this test fails, see the comment above this log message');
             execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-            execSync(util.format('lftp sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint));
+            const lftpCommand = util.format('lftp sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint);
+            console.log('If this test fails, see the comment above this log message. Run -- ', lftpCommand);
+            execSync(lftpCommand);
         });
         it('can get uploaded file', uploadedFileExists);
         it('can access ioncube', checkIonCube);
