@@ -99,3 +99,6 @@
 [2.0.2]
 * Load ionCube plugin with PHP CLI
 
+[2.0.3]
+* Create .htaccess and run.sh by default
+
