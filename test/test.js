@@ -164,8 +164,8 @@ describe('Application life cycle test', function () {
             //     StrictHostKeyChecking no
             //     HashKnownHosts no
             execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-            const lftpCommand = util.format('lftp -d sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint);
-            console.log('If this test fails, see the comment above this log message. Run -- ', lftpCommand);
+            const lftpCommand = util.format('lftp sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint);
+            console.log('If this test fails, see the comment above this log message. Run -- ', lftpCommand, ' -d');
             execSync(lftpCommand);
         });
         it('can get uploaded file', uploadedFileExists);
