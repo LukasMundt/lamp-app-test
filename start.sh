@@ -10,41 +10,37 @@ for f in /app/data/public/index.*; do
     break
 done
 
-if [ ! -f "/app/data/php.ini" ]; then
+if [[ ! -f "/app/data/php.ini" ]]; then
+    echo "==> Generating php.ini"
     cp /etc/php/7.2/apache2/php.ini.orig /app/data/php.ini
 else
     crudini --set /app/data/php.ini Session session.gc_probability 1
     crudini --set /app/data/php.ini Session session.gc_divisor 100
 fi
 
-## Remove old sftpd folders
-## TODO remove this line in later versions
-rm -rf /app/data/sftpd
-
 ## hook for custom start script in /app/data/run.sh
-if [ -f "/app/data/run.sh" ]; then
-    /bin/bash /app/data/run.sh
-fi
+echo "==> Running custom startup script"
+[[ -f "/app/data/run.sh" ]] && /bin/bash /app/data/run.sh
 
 [[ ! -f /app/data/crontab ]] && cp /app/code/crontab.template /app/data/crontab
 
 ## configure in-container Crontab
 # http://www.gsp.com/cgi-bin/man.cgi?section=5&topic=crontab
 if ! (env; cat /app/data/crontab; echo -e '\nMAILTO=""') | crontab -u www-data -; then
-    echo "Error importing crontab. Continuing anyway"
+    echo "==> Error importing crontab. Continuing anyway"
 else
-    echo "Imported crontab"
+    echo "==> Imported crontab"
 fi
 
 # phpMyAdmin auth file
 if [[ ! -f /app/data/.phpmyadminauth ]]; then
-    echo "=> Generating phpMyAdmin authentication file"
+    echo "==> Generating phpMyAdmin authentication file"
     PASSWORD=`pwgen -1 16`
     htpasswd -cb /app/data/.phpmyadminauth admin "${PASSWORD}"
     sed -e "s,PASSWORD,${PASSWORD}," /app/code/phpmyadmin_login.template > /app/data/phpmyadmin_login.txt
 fi
 
-echo "=> Creating credentials.txt"
+echo "==> Creating credentials.txt"
 sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
     -e "s,MYSQL_PORT,${MYSQL_PORT}," \
     -e "s,MYSQL_USERNAME,${MYSQL_USERNAME}," \
@@ -66,5 +62,5 @@ sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
 
 chown -R www-data:www-data /app/data /run/apache2 /run/app
 
-echo "Starting supervisord"
+echo "==> Starting Lamp stack"
 exec /usr/bin/supervisord --configuration /etc/supervisor/supervisord.conf --nodaemon -i Lamp
