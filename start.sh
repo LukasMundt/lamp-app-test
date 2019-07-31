@@ -4,11 +4,15 @@ set -eu
 
 mkdir -p /app/data/public /run/apache2 /run/cron /run/app/sessions
 
-# check if any index file exists
-for f in /app/data/public/index.*; do
-    [ -e "$f" ] && echo "Do not override existing index file" || cp /app/code/index.php /app/data/public/index.php
-    break
-done
+# generate files if neither index.* or .htaccess
+if [[ -z "$(ls -A /app/data/public)" ]]; then
+    echo "==> Generate files on first run" # possibly not first run if user deleted index.*
+    cp /app/code/index.php /app/data/public/index.php
+    echo -e "#!/bin/bash\n\n# Place custom startup commands here" > /app/data/run.sh
+    touch /app/data/public/.htaccess
+else
+    echo "==> Do not override existing index file"
+fi
 
 if [[ ! -f "/app/data/php.ini" ]]; then
     echo "==> Generating php.ini"
@@ -18,9 +22,8 @@ else
     crudini --set /app/data/php.ini Session session.gc_divisor 100
 fi
 
-## hook for custom start script in /app/data/run.sh
 echo "==> Running custom startup script"
-[[ -f "/app/data/run.sh" ]] && /bin/bash /app/data/run.sh
+[[ -f /app/data/run.sh ]] && /bin/bash /app/data/run.sh
 
 [[ ! -f /app/data/crontab ]] && cp /app/code/crontab.template /app/data/crontab
 
