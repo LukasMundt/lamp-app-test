@@ -5,7 +5,7 @@ WORKDIR /app/code
 
 RUN apt remove -y php* && \
     add-apt-repository -y ppa:ondrej/php && apt-get update -y && \
-    apt-get install -y php7.3 libapache2-mod-php7.3 crudini \
+    apt-get install -y php7.3 libapache2-mod-php7.3 crudini composer \
     php7.3-redis \
     php7.3-apcu \
     php7.3-bcmath \
@@ -17,10 +17,12 @@ RUN apt remove -y php* && \
     php7.3-geoip \
     php7.3-gettext \
     php7.3-imap \
+    php7.3-intl \
     php7.3-json \
     php7.3-ldap \
     php7.3-mbstring \
     php7.3-mysql \
+    php7.3-pgsql \
     php7.3-readline \
     php7.3-soap \
     php7.3-sqlite3 \
