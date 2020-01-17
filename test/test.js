@@ -203,7 +203,7 @@ describe('Application life cycle test', function () {
     describe('update', function () {
         // test update
         it('can install app', function () {
-            execSync(`cloudron install --appstore-id lamp.cloudronapp --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron install --appstore-id lamp.cloudronapp.php73 --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
             var inspect = JSON.parse(execSync('cloudron inspect'));
             app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
             expect(app).to.be.an('object');
