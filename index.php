@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title> Cloudron LAMP app </title>
+  <title> Cloudron LAMP app (PHP 7.3)</title>
 
   <style>
 
@@ -50,14 +50,14 @@
 
 <br/>
 
-<h1>Cloudron LAMP App</h1>
+<h1>Cloudron LAMP App (PHP 7.3)</h1>
 
 <br/>
 
 <h2>Overview</h2>
 <p>
   <div>
-  This page is a placeholder showing information on how to use the LAMP stack.
+  This page is a placeholder showing information on how to use the LAMP stack (PHP <?php echo PHP_VERSION ?>)
   This page will get overwritten, when an index.php or index.html is uploaded. You can always
   access the database credentials from the file <code>credentials.txt</code> with <a target="_blank" href="https://cloudron.io/documentation/apps/#ftp-access">SFTP</a>.
   <div>

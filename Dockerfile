@@ -3,36 +3,31 @@ FROM cloudron/base:1.0.0@sha256:147a648a068a2e746644746bbfb42eb7a50d682437cead3c
 RUN mkdir -p /app/code
 WORKDIR /app/code
 
-RUN apt-get update && apt-get install -y php libapache2-mod-php crudini \
-    php-redis \
-    php-apcu \
-    php-bcmath \
-    php-bz2 \
-    php-curl \
-    php-date \
-    php-dba \
-    php-enchant \
-    php-gd \
-    php-geoip \
-    php-gettext \
-    php-imap \
-    php-json \
-    php-log \
-    php-mbstring \
-    php-mime-type \
-    php-mysql \
-    php-readline \
-    php-soap \
-    php-sql-formatter \
-    php-sqlite3 \
-    php-tcpdf \
-    php-timer \
-    php-twig \
-    php-uuid \
-    php-validate \
-    php-xml \
-    php-xml-svg \
-    php-zip \
+RUN apt remove -y php* && \
+    add-apt-repository -y ppa:ondrej/php && apt-get update -y && \
+    apt-get install -y php7.3 libapache2-mod-php7.3 crudini \
+    php7.3-redis \
+    php7.3-apcu \
+    php7.3-bcmath \
+    php7.3-bz2 \
+    php7.3-curl \
+    php7.3-dba \
+    php7.3-enchant \
+    php7.3-gd \
+    php7.3-geoip \
+    php7.3-gettext \
+    php7.3-imap \
+    php7.3-json \
+    php7.3-ldap \
+    php7.3-mbstring \
+    php7.3-mysql \
+    php7.3-readline \
+    php7.3-soap \
+    php7.3-sqlite3 \
+    php7.3-tidy \
+    php7.3-uuid \
+    php7.3-xml \
+    php7.3-zip \
     cron \
     apache2-dev \
     build-essential \
@@ -48,14 +43,14 @@ RUN a2disconf other-vhosts-access-log
 RUN a2enmod rewrite headers rewrite expires cache
 
 # configure mod_php
-RUN crudini --set /etc/php/7.2/apache2/php.ini PHP upload_max_filesize 64M && \
-    crudini --set /etc/php/7.2/apache2/php.ini PHP post_max_size 64M && \
-    crudini --set /etc/php/7.2/apache2/php.ini PHP memory_limit 128M && \
-    crudini --set /etc/php/7.2/apache2/php.ini Session session.save_path /run/app/sessions && \
-    crudini --set /etc/php/7.2/apache2/php.ini Session session.gc_probability 1 && \
-    crudini --set /etc/php/7.2/apache2/php.ini Session session.gc_divisor 100
+RUN crudini --set /etc/php/7.3/apache2/php.ini PHP upload_max_filesize 64M && \
+    crudini --set /etc/php/7.3/apache2/php.ini PHP post_max_size 64M && \
+    crudini --set /etc/php/7.3/apache2/php.ini PHP memory_limit 128M && \
+    crudini --set /etc/php/7.3/apache2/php.ini Session session.save_path /run/app/sessions && \
+    crudini --set /etc/php/7.3/apache2/php.ini Session session.gc_probability 1 && \
+    crudini --set /etc/php/7.3/apache2/php.ini Session session.gc_divisor 100
 
-RUN mv /etc/php/7.2/apache2/php.ini /etc/php/7.2/apache2/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.2/apache2/php.ini
+RUN mv /etc/php/7.3/apache2/php.ini /etc/php/7.3/apache2/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.3/apache2/php.ini
 
 # install RPAF module to override HTTPS, SERVER_PORT, HTTP_HOST based on reverse proxy headers
 # https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-16-04-server
@@ -83,10 +78,10 @@ RUN rm -f /etc/cron.d/* /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/*
 # extension has to appear first, otherwise will error with "The Loader must appear as the first entry in the php.ini file"
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
-    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20170718 && \
+    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.3.so /usr/lib/php/20170718 && \
     rm -rf /tmp/ioncube && \
-    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/apache2/conf.d/00-ioncube.ini && \
-    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.2.so" > /etc/php/7.2/cli/conf.d/00-ioncube.ini
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.3.so" > /etc/php/7.3/apache2/conf.d/00-ioncube.ini && \
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.3.so" > /etc/php/7.3/cli/conf.d/00-ioncube.ini
 
 # configure supervisor
 ADD supervisor/ /etc/supervisor/conf.d/

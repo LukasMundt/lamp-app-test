@@ -71,7 +71,7 @@ describe('Application life cycle test', function () {
 
     function welcomePage(callback) {
         browser.get('https://' + app.fqdn).then(function () {
-            return waitForElement(by.xpath('//*[text()="Cloudron LAMP App"]'));
+            return waitForElement(by.xpath('//*[contains(text(), "Cloudron LAMP App")]'));
         }).then(function () {
             callback();
         });
@@ -129,7 +129,7 @@ describe('Application life cycle test', function () {
         execSync(`cloudron push --app ${app.id} /tmp/crontab /app/data/crontab`);
         fs.unlinkSync('/tmp/crontab');
 
-        execSync(`cloudron restart --wait --app ${app.id}`);
+        execSync(`cloudron restart --app ${app.id}`);
 
         console.log('Waiting for crontab to trigger');
 
@@ -152,7 +152,7 @@ describe('Application life cycle test', function () {
 
     describe('installation and configuration', function () {
         it('install app', function () {
-            execSync(`cloudron install --new --wait --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron install --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
         });
 
         it('can get app information', getAppInfo);
@@ -185,7 +185,7 @@ describe('Application life cycle test', function () {
 
         it('move to different location', function () {
             browser.manage().deleteAllCookies();
-            execSync(`cloudron configure --wait --location ${LOCATION}2 --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron configure --location ${LOCATION}2 --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
             var inspect = JSON.parse(execSync('cloudron inspect'));
             app = inspect.apps.filter(function (a) { return a.location === LOCATION + '2'; })[0];
             expect(app).to.be.an('object');
@@ -203,7 +203,7 @@ describe('Application life cycle test', function () {
     describe('update', function () {
         // test update
         it('can install app', function () {
-            execSync(`cloudron install --new --wait --appstore-id lamp.cloudronapp --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron install --appstore-id lamp.cloudronapp --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
             var inspect = JSON.parse(execSync('cloudron inspect'));
             app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
             expect(app).to.be.an('object');
@@ -219,7 +219,7 @@ describe('Application life cycle test', function () {
         });
 
         it('can update', function () {
-            execSync(`cloudron install --wait --app ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron update --app ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
         });
         it('can get uploaded file', uploadedFileExists);
         it('can access phpmyadmin', checkPhpMyAdmin);

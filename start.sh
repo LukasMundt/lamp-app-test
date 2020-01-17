@@ -16,7 +16,7 @@ fi
 
 if [[ ! -f "/app/data/php.ini" ]]; then
     echo "==> Generating php.ini"
-    cp /etc/php/7.2/apache2/php.ini.orig /app/data/php.ini
+    cp /etc/php/7.3/apache2/php.ini.orig /app/data/php.ini
 else
     crudini --set /app/data/php.ini Session session.gc_probability 1
     crudini --set /app/data/php.ini Session session.gc_divisor 100
