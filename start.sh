@@ -63,7 +63,7 @@ sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
     -e "s,REDIS_URL,${REDIS_URL}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
-chown -R www-data:www-data /app/data /run/apache2 /run/app
+chown -R www-data:www-data /app/data /run/apache2 /run/app /tmp
 
 echo "==> Starting Lamp stack"
 exec /usr/bin/supervisord --configuration /etc/supervisor/supervisord.conf --nodaemon -i Lamp
