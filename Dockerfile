@@ -16,6 +16,7 @@ RUN apt remove -y php* && \
     php7.3-gd \
     php7.3-geoip \
     php7.3-gettext \
+    php7.3-imagick \
     php7.3-imap \
     php7.3-intl \
     php7.3-json \
