@@ -8,3 +8,6 @@
 * Update phpMyAdmin
 * Add php-imagick
 
+[1.0.0]
+* Update PHP to 7.3.16
+
