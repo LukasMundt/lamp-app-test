@@ -164,9 +164,9 @@ describe('Application life cycle test', function () {
             //     StrictHostKeyChecking no
             //     HashKnownHosts no
             execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-            const lftpCommand = util.format('lftp sftp://%s@%s:%s@%s:222  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, apiEndpoint);
-            console.log('If this test fails, see the comment above this log message. Run -- ', lftpCommand, ' -d');
-            execSync(lftpCommand);
+            const sftpCommand = `sshpass -p${process.env.PASSWORD} sftp -P 222 -oBatchMode=no -b - ${process.env.USERNAME}@${app.fqdn}@${apiEndpoint}`;
+            console.log('If this test fails, see the comment above this log message. Run -- ', sftpCommand);
+            execSync(sftpCommand, { input: 'cd public\nput test.php\nbye\n', encoding: 'utf8', cwd: __dirname });
         });
         it('can get uploaded file', uploadedFileExists);
         it('can access ioncube', checkIonCube);
@@ -214,8 +214,9 @@ describe('Application life cycle test', function () {
         it('can upload file with sftp', function () {
             // remove from known hosts in case this test was run on other apps with the same domain already
             // if the tests fail here you want to set "HashKnownHosts no" in ~/.ssh/config
-            execSync(util.format('sed -i \'/%s/d\' -i ~/.ssh/known_hosts', app.fqdn));
-            execSync(util.format('lftp sftp://%s@%s:%s@%s:%s  -e "set sftp:auto-confirm yes; cd public/; put test.php; bye"', process.env.USERNAME, app.fqdn, process.env.PASSWORD, 'my.' + app.domain, 222));
+            const sftpCommand = `sshpass -p${process.env.PASSWORD} sftp -P 222 -oBatchMode=no -b - ${process.env.USERNAME}@${app.fqdn}@${apiEndpoint}`;
+            console.log('If this test fails, see the comment above this log message. Run -- ', sftpCommand);
+            execSync(sftpCommand, { input: 'cd public\nput test.php\nbye\n', encoding: 'utf8', cwd: __dirname });
         });
 
         it('can update', function () {
