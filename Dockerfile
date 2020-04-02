@@ -3,9 +3,10 @@ FROM cloudron/base:1.0.0@sha256:147a648a068a2e746644746bbfb42eb7a50d682437cead3c
 RUN mkdir -p /app/code
 WORKDIR /app/code
 
+# keep composer at the end since it installs cli and chooses 7.4 as the alternative if in the front
 RUN apt remove -y php* && \
     add-apt-repository -y ppa:ondrej/php && apt-get update -y && \
-    apt-get install -y php7.3 libapache2-mod-php7.3 crudini composer \
+    apt-get install -y php7.3 libapache2-mod-php7.3 crudini \
     php7.3-redis \
     php7.3-apcu \
     php7.3-bcmath \
@@ -33,8 +34,9 @@ RUN apt remove -y php* && \
     php7.3-zip \
     cron \
     apache2-dev \
-    build-essential \
-    && rm -rf /var/cache/apt /var/lib/apt/lists /etc/ssh_host_*
+    build-essential && \
+    apt install composer && \
+    rm -rf /var/cache/apt /var/lib/apt/lists /etc/ssh_host_*
 
 # configure apache
 RUN rm /etc/apache2/sites-enabled/*
