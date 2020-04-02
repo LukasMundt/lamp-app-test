@@ -35,7 +35,7 @@ RUN apt remove -y php* && \
     cron \
     apache2-dev \
     build-essential && \
-    apt install composer && \
+    apt install -y composer && \
     rm -rf /var/cache/apt /var/lib/apt/lists /etc/ssh_host_*
 
 # configure apache
