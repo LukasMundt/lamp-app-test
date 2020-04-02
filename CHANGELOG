@@ -11,3 +11,6 @@
 [1.0.0]
 * Update PHP to 7.3.16
 
+[1.0.1]
+* PHP CLI is now correctly set to 7.3
+
