@@ -3,6 +3,7 @@ FROM cloudron/base:2.0.0@sha256:f9fea80513aa7c92fe2e7bf3978b54c8ac5222f47a9a32a7
 RUN mkdir -p /app/code
 WORKDIR /app/code
 
+# required for compiling rpaf
 RUN apt-get -y update && apt install -y apache2-dev && rm -rf /var/cache/apt /var/lib/apt/lists
 
 # configure apache
