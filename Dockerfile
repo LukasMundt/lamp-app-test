@@ -1,42 +1,9 @@
-FROM cloudron/base:1.0.0@sha256:147a648a068a2e746644746bbfb42eb7a50d682437cead3c67c933c546357617
+FROM cloudron/base:2.0.0@sha256:f9fea80513aa7c92fe2e7bf3978b54c8ac5222f47a9a32a7f8833edf0eb5a4f4
 
 RUN mkdir -p /app/code
 WORKDIR /app/code
 
-# keep composer at the end since it installs cli and chooses 7.4 as the alternative if in the front
-RUN apt remove -y php* && \
-    add-apt-repository -y ppa:ondrej/php && apt-get update -y && \
-    apt-get install -y php7.3 libapache2-mod-php7.3 crudini \
-    php7.3-redis \
-    php7.3-apcu \
-    php7.3-bcmath \
-    php7.3-bz2 \
-    php7.3-curl \
-    php7.3-dba \
-    php7.3-enchant \
-    php7.3-gd \
-    php7.3-geoip \
-    php7.3-gettext \
-    php7.3-imagick \
-    php7.3-imap \
-    php7.3-intl \
-    php7.3-json \
-    php7.3-ldap \
-    php7.3-mbstring \
-    php7.3-mysql \
-    php7.3-pgsql \
-    php7.3-readline \
-    php7.3-soap \
-    php7.3-sqlite3 \
-    php7.3-tidy \
-    php7.3-uuid \
-    php7.3-xml \
-    php7.3-zip \
-    cron \
-    apache2-dev \
-    build-essential && \
-    apt install -y composer && \
-    rm -rf /var/cache/apt /var/lib/apt/lists /etc/ssh_host_*
+RUN apt-get -y update && apt install -y apache2-dev && rm -rf /var/cache/apt /var/lib/apt/lists
 
 # configure apache
 RUN rm /etc/apache2/sites-enabled/*
