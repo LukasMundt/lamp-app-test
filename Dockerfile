@@ -4,7 +4,7 @@ RUN mkdir -p /app/code
 WORKDIR /app/code
 
 # required for compiling rpaf
-RUN apt-get -y update && apt install -y apache2-dev && rm -rf /var/cache/apt /var/lib/apt/lists
+RUN apt-get -y update && apt install -y cron apache2-dev && rm -rf /var/cache/apt /var/lib/apt/lists
 
 # configure apache
 RUN rm /etc/apache2/sites-enabled/*
