@@ -18,3 +18,6 @@
 * Update PHP to 7.3.17
 * Use latest base image 2.0.0
 
+[1.1.1]
+* Ensure PHP CLI uses user's php.ini
+
