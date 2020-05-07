@@ -21,3 +21,6 @@
 [1.1.1]
 * Ensure PHP CLI uses user's php.ini
 
+[1.1.2]
+* Install php-imagick
+
