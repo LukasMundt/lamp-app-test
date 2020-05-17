@@ -71,24 +71,24 @@
 <p>Use the following environment variables in the PHP code to access MySQL:</p>
 <table>
   <tr>
-    <td>MYSQL_HOST</td>
-    <td><?php echo getenv("MYSQL_HOST") ?></td>
+    <td>CLOUDRON_MYSQL_HOST</td>
+    <td><?php echo getenv("CLOUDRON_MYSQL_HOST") ?></td>
   </tr>
   <tr>
-    <td>MYSQL_PORT</td>
-    <td><?php echo getenv("MYSQL_PORT") ?></td>
+    <td>CLOUDRON_MYSQL_PORT</td>
+    <td><?php echo getenv("CLOUDRON_MYSQL_PORT") ?></td>
   </tr>
   <tr>
-    <td>MYSQL_USERNAME</td>
-    <td><?php echo getenv("MYSQL_USERNAME") ?></td>
+    <td>CLOUDRON_MYSQL_USERNAME</td>
+    <td><?php echo getenv("CLOUDRON_MYSQL_USERNAME") ?></td>
   </tr>
   <tr>
-    <td>MYSQL_PASSWORD</td>
-    <td><?php echo getenv("MYSQL_PASSWORD") ?></td>
+    <td>CLOUDRON_MYSQL_PASSWORD</td>
+    <td><?php echo getenv("CLOUDRON_MYSQL_PASSWORD") ?></td>
   </tr>
   <tr>
-    <td>MYSQL_DATABASE</td>
-    <td><?php echo getenv("MYSQL_DATABASE") ?></td>
+    <td>CLOUDRON_MYSQL_DATABASE</td>
+    <td><?php echo getenv("CLOUDRON_MYSQL_DATABASE") ?></td>
   </tr>
 </table>
 
@@ -120,32 +120,32 @@
 <p>Use the following environment variables in the PHP code to send email:</p>
 <table>
   <tr>
-    <td>MAIL_SMTP_SERVER</td>
-    <td><?php echo getenv("MAIL_SMTP_SERVER") ?></td>
+    <td>CLOUDRON_MAIL_SMTP_SERVER</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_SERVER") ?></td>
   </tr>
   <tr>
-    <td>MAIL_SMTP_PORT</td>
-    <td><?php echo getenv("MAIL_SMTP_PORT") ?></td>
+    <td>CLOUDRON_MAIL_SMTP_PORT</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_PORT") ?></td>
   </tr>
   <tr>
-    <td>MAIL_SMTPS_PORT</td>
-    <td><?php echo getenv("MAIL_SMTPS_PORT") ?></td>
+    <td>CLOUDRON_MAIL_SMTPS_PORT</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_SMTPS_PORT") ?></td>
   </tr>
   <tr>
-    <td>MAIL_SMTP_USERNAME</td>
-    <td><?php echo getenv("MAIL_SMTP_USERNAME") ?></td>
+    <td>CLOUDRON_MAIL_SMTP_USERNAME</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_USERNAME") ?></td>
   </tr>
   <tr>
-    <td>MAIL_SMTP_PASSWORD</td>
-    <td><?php echo getenv("MAIL_SMTP_PASSWORD") ?></td>
+    <td>CLOUDRON_MAIL_SMTP_PASSWORD</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_PASSWORD") ?></td>
   </tr>
   <tr>
-    <td>MAIL_FROM</td>
-    <td><?php echo getenv("MAIL_FROM") ?></td>
+    <td>CLOUDRON_MAIL_FROM</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_FROM") ?></td>
   </tr>
   <tr>
-    <td>MAIL_DOMAIN</td>
-    <td><?php echo getenv("MAIL_DOMAIN") ?></td>
+    <td>CLOUDRON_MAIL_DOMAIN</td>
+    <td><?php echo getenv("CLOUDRON_MAIL_DOMAIN") ?></td>
   </tr>
 </table>
 
@@ -155,20 +155,20 @@
 <p>Use the following environment variables in the PHP code to connect to Redis:</p>
 <table>
   <tr>
-    <td>REDIS_URL</td>
-    <td><?php echo getenv("REDIS_URL") ?></td>
+    <td>CLOUDRON_REDIS_URL</td>
+    <td><?php echo getenv("CLOUDRON_REDIS_URL") ?></td>
   </tr>
   <tr>
-    <td>REDIS_HOST</td>
-    <td><?php echo getenv("REDIS_HOST") ?></td>
+    <td>CLOUDRON_REDIS_HOST</td>
+    <td><?php echo getenv("CLOUDRON_REDIS_HOST") ?></td>
   </tr>
   <tr>
-    <td>REDIS_PORT</td>
-    <td><?php echo getenv("REDIS_PORT") ?></td>
+    <td>CLOUDRON_REDIS_PORT</td>
+    <td><?php echo getenv("CLOUDRON_REDIS_PORT") ?></td>
   </tr>
   <tr>
-    <td>REDIS_PASSWORD</td>
-    <td><?php echo getenv("REDIS_PASSWORD") ?></td>
+    <td>CLOUDRON_REDIS_PASSWORD</td>
+    <td><?php echo getenv("CLOUDRON_REDIS_PASSWORD") ?></td>
   </tr>
 </table>
 

@@ -7,7 +7,7 @@
   "version": "1.1.2",
   "healthCheckPath": "/",
   "httpPort": 80,
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "website": "https://cloudron.io/",
   "contactEmail": "apps@cloudron.io",
   "icon": "logo.png",

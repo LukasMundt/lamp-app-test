@@ -125,7 +125,7 @@ describe('Application life cycle test', function () {
     function checkCron(callback) {
         this.timeout(60000 * 2);
 
-        fs.writeFileSync('/tmp/crontab', '* * * * * echo -n "$MYSQL_HOST" > /app/data/public/cron\n', 'utf8');
+        fs.writeFileSync('/tmp/crontab', '* * * * * echo -n "$CLOUDRON_MYSQL_HOST" > /app/data/public/cron\n', 'utf8');
         execSync(`cloudron push --app ${app.id} /tmp/crontab /app/data/crontab`);
         fs.unlinkSync('/tmp/crontab');
 

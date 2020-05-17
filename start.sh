@@ -44,23 +44,23 @@ if [[ ! -f /app/data/.phpmyadminauth ]]; then
 fi
 
 echo "==> Creating credentials.txt"
-sed -e "s,MYSQL_HOST,${MYSQL_HOST}," \
-    -e "s,MYSQL_PORT,${MYSQL_PORT}," \
-    -e "s,MYSQL_USERNAME,${MYSQL_USERNAME}," \
-    -e "s,MYSQL_PASSWORD,${MYSQL_PASSWORD}," \
-    -e "s,MYSQL_DATABASE,${MYSQL_DATABASE}," \
-    -e "s,MYSQL_URL,${MYSQL_URL}," \
-    -e "s,MAIL_SMTP_SERVER,${MAIL_SMTP_SERVER}," \
-    -e "s,MAIL_SMTP_PORT,${MAIL_SMTP_PORT}," \
-    -e "s,MAIL_SMTPS_PORT,${MAIL_SMTPS_PORT}," \
-    -e "s,MAIL_SMTP_USERNAME,${MAIL_SMTP_USERNAME}," \
-    -e "s,MAIL_SMTP_PASSWORD,${MAIL_SMTP_PASSWORD}," \
-    -e "s,MAIL_FROM,${MAIL_FROM}," \
-    -e "s,MAIL_DOMAIN,${MAIL_DOMAIN}," \
-    -e "s,REDIS_HOST,${REDIS_HOST}," \
-    -e "s,REDIS_PORT,${REDIS_PORT}," \
-    -e "s,REDIS_PASSWORD,${REDIS_PASSWORD}," \
-    -e "s,REDIS_URL,${REDIS_URL}," \
+sed -e "s,MYSQL_HOST,${CLOUDRON_MYSQL_HOST}," \
+    -e "s,MYSQL_PORT,${CLOUDRON_MYSQL_PORT}," \
+    -e "s,MYSQL_USERNAME,${CLOUDRON_MYSQL_USERNAME}," \
+    -e "s,MYSQL_PASSWORD,${CLOUDRON_MYSQL_PASSWORD}," \
+    -e "s,MYSQL_DATABASE,${CLOUDRON_MYSQL_DATABASE}," \
+    -e "s,MYSQL_URL,${CLOUDRON_MYSQL_URL}," \
+    -e "s,MAIL_SMTP_SERVER,${CLOUDRON_MAIL_SMTP_SERVER}," \
+    -e "s,MAIL_SMTP_PORT,${CLOUDRON_MAIL_SMTP_PORT}," \
+    -e "s,MAIL_SMTPS_PORT,${CLOUDRON_MAIL_SMTPS_PORT}," \
+    -e "s,MAIL_SMTP_USERNAME,${CLOUDRON_MAIL_SMTP_USERNAME}," \
+    -e "s,MAIL_SMTP_PASSWORD,${CLOUDRON_MAIL_SMTP_PASSWORD}," \
+    -e "s,MAIL_FROM,${CLOUDRON_MAIL_FROM}," \
+    -e "s,MAIL_DOMAIN,${CLOUDRON_MAIL_DOMAIN}," \
+    -e "s,REDIS_HOST,${CLOUDRON_REDIS_HOST}," \
+    -e "s,REDIS_PORT,${CLOUDRON_REDIS_PORT}," \
+    -e "s,REDIS_PASSWORD,${CLOUDRON_REDIS_PASSWORD}," \
+    -e "s,REDIS_URL,${CLOUDRON_REDIS_URL}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
 chown -R www-data:www-data /app/data /run/apache2 /run/app /tmp
