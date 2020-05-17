@@ -22,8 +22,9 @@ else
     crudini --set /app/data/php.ini Session session.gc_divisor 100
 fi
 
-echo "==> Running custom startup script"
-[[ -f /app/data/run.sh ]] && /bin/bash /app/data/run.sh
+# source it so that env vars are persisted
+echo "==> Source custom startup script"
+[[ -f /app/data/run.sh ]] && source /app/data/run.sh
 
 [[ ! -f /app/data/crontab ]] && cp /app/code/crontab.template /app/data/crontab
 
