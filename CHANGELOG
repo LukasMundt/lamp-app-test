@@ -24,3 +24,11 @@
 [1.1.2]
 * Install php-imagick
 
+[2.0.0]
+* *BREAKING CHANGE:* This app now uses manifest v2. Cloudron specific environment variables
+now have the prefix `CLOUDRON_`. Please update your code accordingly. For example,
+** `MYSQL_URL` -> `CLOUDRON_MYSQL_URL`
+** `MAIL_FROM` -> `CLOUDRON_MAIL_FROM`
+** `REDIS_URL` -> `CLOUDRON_REDIS_URL`
+** ... and so on ...
+
