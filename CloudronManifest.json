@@ -1,9 +1,9 @@
 {
-  "id": "lamp.cloudronapp.php73",
-  "title": "LAMP (PHP 7.3)",
+  "id": "lamp.cloudronapp.php74",
+  "title": "LAMP (PHP 7.4)",
   "author": "Cloudron developers",
   "description": "file://DESCRIPTION.md",
-  "tagline": "An empty LAMP stack (PHP 7.3)",
+  "tagline": "An empty LAMP stack (PHP 7.4)",
   "version": "2.0.0-1",
   "healthCheckPath": "/",
   "httpPort": 80,
