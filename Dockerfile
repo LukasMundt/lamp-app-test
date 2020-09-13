@@ -4,7 +4,10 @@ RUN mkdir -p /app/code
 WORKDIR /app/code
 
 # required for compiling rpaf
-RUN apt-get -y update && apt install -y cron apache2-dev php-imagick && rm -rf /var/cache/apt /var/lib/apt/lists
+RUN apt-get -y update && \
+    apt install -y apache2-dev php7.4 php7.4-{bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,gmp,imap,interbase,intl,json,ldap,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,soap,sqlite3,sybase,tidy,xml,xmlrpc,xsl,zip} libapache2-mod-php7.4 php-{apcu,date,geoip,gettext,imagick,gnupg,pear,redis,twig,uuid,validate,zmq} && \
+    apt remove -y php7.3 libapache2-mod-php7.3 && \
+    rm -rf /var/cache/apt /var/lib/apt/lists
 
 # configure apache
 RUN rm /etc/apache2/sites-enabled/*
@@ -13,18 +16,18 @@ COPY apache/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY apache/lamp.conf /etc/apache2/sites-enabled/lamp.conf
 RUN echo "Listen 80" > /etc/apache2/ports.conf
 RUN a2disconf other-vhosts-access-log
-RUN a2enmod rewrite headers rewrite expires cache
+RUN a2enmod rewrite headers rewrite expires cache php7.4
 
 # configure mod_php
-RUN crudini --set /etc/php/7.3/apache2/php.ini PHP upload_max_filesize 64M && \
-    crudini --set /etc/php/7.3/apache2/php.ini PHP post_max_size 64M && \
-    crudini --set /etc/php/7.3/apache2/php.ini PHP memory_limit 128M && \
-    crudini --set /etc/php/7.3/apache2/php.ini Session session.save_path /run/app/sessions && \
-    crudini --set /etc/php/7.3/apache2/php.ini Session session.gc_probability 1 && \
-    crudini --set /etc/php/7.3/apache2/php.ini Session session.gc_divisor 100
+RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
+    crudini --set /etc/php/7.4/apache2/php.ini PHP post_max_size 64M && \
+    crudini --set /etc/php/7.4/apache2/php.ini PHP memory_limit 128M && \
+    crudini --set /etc/php/7.4/apache2/php.ini Session session.save_path /run/app/sessions && \
+    crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_probability 1 && \
+    crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_divisor 100
 
-RUN mv /etc/php/7.3/apache2/php.ini /etc/php/7.3/apache2/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.3/apache2/php.ini && \
-    mv /etc/php/7.3/cli/php.ini /etc/php/7.3/cli/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.3/cli/php.ini
+RUN mv /etc/php/7.4/apache2/php.ini /etc/php/7.4/apache2/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.4/apache2/php.ini && \
+    mv /etc/php/7.4/cli/php.ini /etc/php/7.4/cli/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.4/cli/php.ini
 
 # install RPAF module to override HTTPS, SERVER_PORT, HTTP_HOST based on reverse proxy headers
 # https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-16-04-server
@@ -52,10 +55,10 @@ RUN rm -f /etc/cron.d/* /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/*
 # extension has to appear first, otherwise will error with "The Loader must appear as the first entry in the php.ini file"
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
-    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.3.so /usr/lib/php/20170718 && \
+    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.4.so /usr/lib/php/20170718 && \
     rm -rf /tmp/ioncube && \
-    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.3.so" > /etc/php/7.3/apache2/conf.d/00-ioncube.ini && \
-    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.3.so" > /etc/php/7.3/cli/conf.d/00-ioncube.ini
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.4.so" > /etc/php/7.4/apache2/conf.d/00-ioncube.ini && \
+    echo "zend_extension=/usr/lib/php/20170718/ioncube_loader_lin_7.4.so" > /etc/php/7.4/cli/conf.d/00-ioncube.ini
 
 # configure supervisor
 ADD supervisor/ /etc/supervisor/conf.d/
