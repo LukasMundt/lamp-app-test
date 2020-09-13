@@ -14,11 +14,8 @@ else
     echo "==> Do not override existing index file"
 fi
 
-if [[ ! -f "/app/data/php.ini" ]]; then
-    echo "==> Generating php.ini"
-    cp /etc/php/7.4/apache2/php.ini.orig /app/data/php.ini
-    crudini --set /app/data/php.ini Session session.gc_probability 1
-    crudini --set /app/data/php.ini Session session.gc_divisor 100
+if [[ ! -f /app/data/php.ini ]]; then
+    echo -e "; Add custom PHP configuration in this file\n; Settings here are merged with the package's built-in php.ini\n\n" > /app/data/php.ini
 fi
 
 # source it so that env vars are persisted

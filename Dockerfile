@@ -26,8 +26,10 @@ RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_probability 1 && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_divisor 100
 
-RUN mv /etc/php/7.4/apache2/php.ini /etc/php/7.4/apache2/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.4/apache2/php.ini && \
-    mv /etc/php/7.4/cli/php.ini /etc/php/7.4/cli/php.ini.orig && ln -sf /app/data/php.ini /etc/php/7.4/cli/php.ini
+RUN cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/cli/php.ini
+
+RUN ln -s /app/data/php.ini /etc/php/7.4/apache2/conf.d/99-cloudron.ini && \
+    ln -s /app/data/php.ini /etc/php/7.4/cli/conf.d/99-cloudron.ini
 
 # install RPAF module to override HTTPS, SERVER_PORT, HTTP_HOST based on reverse proxy headers
 # https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-16-04-server
