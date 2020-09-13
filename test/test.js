@@ -178,7 +178,12 @@ describe('Application life cycle test', function () {
         });
 
         it('restore app', function () {
-            execSync(`cloudron restore --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            const backups = JSON.parse(execSync('cloudron backup list --raw'));
+            execSync('cloudron uninstall --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync('cloudron install --location ' + LOCATION, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            var inspect = JSON.parse(execSync('cloudron inspect'));
+            app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
+            execSync(`cloudron restore --backup ${backups[0].id} --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
         });
 
         it('can get uploaded file', uploadedFileExists);
@@ -203,7 +208,7 @@ describe('Application life cycle test', function () {
     describe('update', function () {
         // test update
         it('can install app', function () {
-            execSync(`cloudron install --appstore-id lamp.cloudronapp.php73 --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
+            execSync(`cloudron install --appstore-id ${app.manifest.id} --location ${LOCATION}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
             var inspect = JSON.parse(execSync('cloudron inspect'));
             app = inspect.apps.filter(function (a) { return a.location === LOCATION; })[0];
             expect(app).to.be.an('object');
