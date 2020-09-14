@@ -9,6 +9,6 @@ SFTP Access:
 
 **Host**: $CLOUDRON-API-DOMAIN<br/>
 **Port**: 222<br/>
-**Username**: $CLOUDRON-USERNAME<br/>
+**Username**: $CLOUDRON-USERNAME@$CLOUDRON-APP-DOMAIN<br/>
 **Password**: Your Cloudron Password<br/>
 
