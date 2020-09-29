@@ -4,3 +4,7 @@
 [0.2.0]
 - Fix typo in post install message
 
+[1.0.0]
+* Update screenshot in manifest
+* Do not show credentials in index.php
+
