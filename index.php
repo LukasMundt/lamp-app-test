@@ -57,53 +57,31 @@
 <h2>Overview</h2>
 <p>
   <div>
-  This page is a placeholder showing information on how to use the LAMP stack (PHP <?php echo PHP_VERSION ?>)
-  This page will get overwritten, when an index.php or index.html is uploaded. You can always
-  access the database credentials from the file <code>credentials.txt</code> with <a target="_blank" href="https://cloudron.io/documentation/apps/#ftp-access">SFTP</a>.
-  <div>
-  <br/>
-  <b>The credentials shown here can only be used from within your app. They will not work from outside the Cloudron.</b>
+    This page is a placeholder showing information on how to use the LAMP stack (PHP <?php echo PHP_VERSION ?>)
+    This page will get overwritten, when an index.php or index.html is uploaded.
+  </div>
 </p>
 
-<br/>
-
-<h2>MySQL Credentials</h2>
-<p>Use the following environment variables in the PHP code to access MySQL:</p>
-<table>
-  <tr>
-    <td>CLOUDRON_MYSQL_HOST</td>
-    <td><?php echo getenv("CLOUDRON_MYSQL_HOST") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MYSQL_PORT</td>
-    <td><?php echo getenv("CLOUDRON_MYSQL_PORT") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MYSQL_USERNAME</td>
-    <td><?php echo getenv("CLOUDRON_MYSQL_USERNAME") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MYSQL_PASSWORD</td>
-    <td><?php echo getenv("CLOUDRON_MYSQL_PASSWORD") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MYSQL_DATABASE</td>
-    <td><?php echo getenv("CLOUDRON_MYSQL_DATABASE") ?></td>
-  </tr>
-</table>
-
-<br/>
-
-<h2>phpMyAdmin Access</h2>
+<h2>Database Credentials</h2>
 <p>
-  It is installed <a href="/phpmyadmin" target="_blank">here</a>. For login credentials see phpmyadmin_login.txt via SFTP.
+  <div>
+    MySQL, Redis &amp; SMTP credentials are stored in <code>credentials.txt</code>. You can access this file
+    via <a target="_blank" href="https://docs.cloudron.io/apps/#ftp-access">SFTP</a> or via the
+    <a target="_blank" href="https://docs.cloudron.io/apps/#file-manager">File Manager</a>.
+  </div>
+  <br/>
+  <div>Note that the credentials can only be used from within your app. They will not work from outside the Cloudron.</div>
 </p>
 
-<br/>
+<h2>phpMyAdmin</h2>
+<p>
+  phpMyAdmin is installed <a href="/phpmyadmin" target="_blank">here</a>. For login credentials, see <code>phpmyadmin_login.txt</code>
+  via SFTP or the File Manager.
+</p>
 
 <h2>Cron</h2>
 <p>
-  Put a file called <code>crontab</code> into the directory <code>/app/data</code> and it will picked up at next app restart.
+  Put a file called <code>crontab</code> into the directory <code>/app/data</code> and it will be picked up at next app restart.
   It has to be in the cron syntax without username and must end with a newline.
   For example, the following crontab updates feeds every hour:
 </p>
@@ -113,66 +91,6 @@
 <p>
   Commands are executed as the user www-data. Generate cron patterns via <a href="http://www.crontabgenerator.com/">crontabgenerator</a>.
 </p>
-
-<br/>
-
-<h2>Sendmail Credentials</h2>
-<p>Use the following environment variables in the PHP code to send email:</p>
-<table>
-  <tr>
-    <td>CLOUDRON_MAIL_SMTP_SERVER</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_SERVER") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_SMTP_PORT</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_PORT") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_SMTPS_PORT</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_SMTPS_PORT") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_SMTP_USERNAME</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_USERNAME") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_SMTP_PASSWORD</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_SMTP_PASSWORD") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_FROM</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_FROM") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_MAIL_DOMAIN</td>
-    <td><?php echo getenv("CLOUDRON_MAIL_DOMAIN") ?></td>
-  </tr>
-</table>
-
-<br/>
-
-<h2>Redis Credentials</h2>
-<p>Use the following environment variables in the PHP code to connect to Redis:</p>
-<table>
-  <tr>
-    <td>CLOUDRON_REDIS_URL</td>
-    <td><?php echo getenv("CLOUDRON_REDIS_URL") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_REDIS_HOST</td>
-    <td><?php echo getenv("CLOUDRON_REDIS_HOST") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_REDIS_PORT</td>
-    <td><?php echo getenv("CLOUDRON_REDIS_PORT") ?></td>
-  </tr>
-  <tr>
-    <td>CLOUDRON_REDIS_PASSWORD</td>
-    <td><?php echo getenv("CLOUDRON_REDIS_PASSWORD") ?></td>
-  </tr>
-</table>
-
-<br/>
 
 </body>
 </html>
