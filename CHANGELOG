@@ -8,3 +8,6 @@
 * Update screenshot in manifest
 * Do not show credentials in index.php
 
+[1.1.0]
+* Add mailparse package
+
