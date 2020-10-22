@@ -2,7 +2,7 @@
 
 set -eu
 
-mkdir -p /app/data/public /run/apache2 /run/cron /run/app/sessions
+mkdir -p /app/data/public /run/apache2 /run/cron /run/app/sessions /app/data/apache
 
 # generate files if neither index.* or .htaccess
 if [[ -z "$(ls -A /app/data/public)" ]]; then
@@ -17,6 +17,9 @@ fi
 if [[ ! -f /app/data/php.ini ]]; then
     echo -e "; Add custom PHP configuration in this file\n; Settings here are merged with the package's built-in php.ini\n\n" > /app/data/php.ini
 fi
+
+[[ ! -f /app/data/apache/mpm_prefork.conf ]] && cp /app/code/apache/mpm_prefork.conf /app/data/apache/mpm_prefork.conf
+[[ ! -f /app/data/apache/app.conf ]] && cp /app/code/apache/app.conf /app/data/apache/app.conf
 
 # source it so that env vars are persisted
 echo "==> Source custom startup script"

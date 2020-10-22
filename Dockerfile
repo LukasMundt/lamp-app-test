@@ -10,13 +10,16 @@ RUN apt-get -y update && \
     rm -rf /var/cache/apt /var/lib/apt/lists
 
 # configure apache
-RUN rm /etc/apache2/sites-enabled/*
-RUN sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf
-COPY apache/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY apache/lamp.conf /etc/apache2/sites-enabled/lamp.conf
-RUN echo "Listen 80" > /etc/apache2/ports.conf
-RUN a2disconf other-vhosts-access-log
-RUN a2enmod rewrite headers rewrite expires cache php7.4
+# keep the prefork linking below a2enmod since it removes dangling mods-enabled (!)
+RUN a2disconf other-vhosts-access-log && \
+    echo "Listen 80" > /etc/apache2/ports.conf && \
+    a2enmod rewrite headers rewrite expires cache php7.4 && \
+    rm /etc/apache2/sites-enabled/* && \
+    sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf && \
+    ln -sf /app/data/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf && \
+    ln -sf /app/data/apache/app.conf /etc/apache2/sites-enabled/app.conf
+
+COPY apache/ /app/code/apache/
 
 # configure mod_php
 RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
