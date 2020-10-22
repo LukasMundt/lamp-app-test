@@ -11,3 +11,6 @@
 [1.1.0]
 * Add mailparse package
 
+[1.2.0]
+* Make apache configs more customizable (/app/data/apache)
+
