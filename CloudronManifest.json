@@ -20,7 +20,8 @@
       }
     },
     "sendmail": {},
-    "redis": {}
+    "redis": {},
+    "ldap": {}
   },
   "tags": [ "apache", "php", "mysql", "hosting", "lamp", "stacks", "development" ],
   "mediaLinks": [ "https://raw.githubusercontent.com/cloudron-io/lamp-app/master/medialinks/medialink_0.jpg" ],
