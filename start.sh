@@ -63,6 +63,17 @@ sed -e "s,\bMYSQL_HOST\b,${CLOUDRON_MYSQL_HOST}," \
     -e "s,\bREDIS_URL\b,${CLOUDRON_REDIS_URL}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
+if [[ -n "${CLOUDRON_LDAP_SERVER:-}" ]]; then
+    sed -e "s,\bLDAP_HOST\b,${CLOUDRON_LDAP_HOST}," \
+        -e "s,\bLDAP_PORT\b,${CLOUDRON_LDAP_PORT}," \
+        -e "s/\bLDAP_BIND_DN\b/${CLOUDRON_LDAP_BIND_DN}/" \
+        -e "s,\bLDAP_BIND_PASSWORD\b,${CLOUDRON_LDAP_BIND_PASSWORD}," \
+        -e "s/\bLDAP_USERS_BASE_DN\b/${CLOUDRON_LDAP_USERS_BASE_DN}/" \
+        -i /app/data/credentials.txt
+else
+     sed '/^LDAP Credentials/,$d' -i /app/data/credentials.txt  # $d means delete till end of file
+fi
+
 chown -R www-data:www-data /app/data /run/apache2 /run/app /tmp
 
 echo "==> Starting Lamp stack"
