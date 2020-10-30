@@ -63,6 +63,7 @@ sed -e "s,\bMYSQL_HOST\b,${CLOUDRON_MYSQL_HOST}," \
     -e "s,\bREDIS_URL\b,${CLOUDRON_REDIS_URL}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
+# older installs did not have LDAP and the current version does not have optionalSso
 if [[ -n "${CLOUDRON_LDAP_SERVER:-}" ]]; then
     sed -e "s,\bLDAP_HOST\b,${CLOUDRON_LDAP_HOST}," \
         -e "s,\bLDAP_PORT\b,${CLOUDRON_LDAP_PORT}," \
