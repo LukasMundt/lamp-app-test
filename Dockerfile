@@ -75,7 +75,4 @@ COPY start.sh index.php crontab.template credentials.template phpmyadmin_login.t
 # lock www-data but allow su - www-data to work
 RUN passwd -l www-data && usermod --shell /bin/bash --home /app/data www-data
 
-# make cloudron exec sane
-WORKDIR /app/data
-
 CMD [ "/app/code/start.sh" ]
