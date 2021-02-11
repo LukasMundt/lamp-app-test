@@ -1,9 +1,6 @@
-This app is setup to use a MySQL database, redis cache and ability to send emails.
+The database, redis and email credentials can be found in `/app/data/credentials.txt`. phpMyAdmin access is stored in `/app/data/phpmyadmin_login.txt`.
 
-You can upload and view files using either <a href="/#/app/$CLOUDRON-APP-ID/access">SFTP</a>
-or using the <a href="/#/app/$CLOUDRON-APP-ID/console">File Manager</a>.
-
-The database credentials are stored in `credentials.txt`. phpMyAdmin access is stored in `phpmyadmin_login.txt`.
+The files can be accessed using the the <a href="/#/app/$CLOUDRON-APP-ID/console">File Manager</a> or SFTP.
 
 SFTP Access:
 
