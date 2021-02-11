@@ -22,8 +22,6 @@ var by = webdriver.By,
     until = webdriver.until,
     Builder = require('selenium-webdriver').Builder;
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 if (!process.env.USERNAME || !process.env.PASSWORD) {
     console.log('USERNAME and PASSWORD env vars need to be set');
     process.exit(1);
