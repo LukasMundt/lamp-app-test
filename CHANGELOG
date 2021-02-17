@@ -21,3 +21,6 @@
 * Use base image v3
 * Update phpMyAdmin to 5.0.4. Contains important [security fixes](https://www.phpmyadmin.net/files/5.0.3/)
 
+[1.5.0]
+* Enable multiDomain flag
+
