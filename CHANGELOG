@@ -24,3 +24,5 @@
 [1.5.0]
 * Enable multiDomain flag
 
+[1.5.1]
+* Cleanup possible leftover apache2 pid file

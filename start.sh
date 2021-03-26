@@ -78,4 +78,5 @@ fi
 chown -R www-data:www-data /app/data /run/apache2 /run/app /tmp
 
 echo "==> Starting Lamp stack"
+rm -f "/run/apache2/apache2.pid"
 exec /usr/bin/supervisord --configuration /etc/supervisor/supervisord.conf --nodaemon -i Lamp
