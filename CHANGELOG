@@ -26,3 +26,7 @@
 
 [1.5.1]
 * Cleanup possible leftover apache2 pid file
+
+[1.5.2]
+* Update apache config to log the client IP correctly
+
