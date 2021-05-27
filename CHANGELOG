@@ -30,3 +30,6 @@
 [1.5.2]
 * Update apache config to log the client IP correctly
 
+[1.6.0]
+* Update phpMyAdmin to 5.1.0
+
