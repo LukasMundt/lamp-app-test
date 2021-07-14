@@ -21,6 +21,13 @@ COPY apache/ /app/code/apache/
 RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
     crudini --set /etc/php/7.4/apache2/php.ini PHP post_max_size 64M && \
     crudini --set /etc/php/7.4/apache2/php.ini PHP memory_limit 128M && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.enable 1 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.enable_cli 1 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.interned_strings_buffer 8 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.max_accelerated_files 10000 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.memory_consumption 128 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.save_comments 1 && \
+    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.revalidate_freq 60 && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.save_path /run/app/sessions && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_probability 1 && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_divisor 100
