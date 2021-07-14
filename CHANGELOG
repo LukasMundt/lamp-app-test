@@ -33,3 +33,7 @@
 [1.6.0]
 * Update phpMyAdmin to 5.1.0
 
+[1.6.1]
+* Update phpMyAdmin to 5.1.1
+* Enable opcache explicitly
+
