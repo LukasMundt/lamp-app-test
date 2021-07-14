@@ -52,7 +52,7 @@ RUN echo "LoadModule rpaf_module /usr/lib/apache2/modules/mod_rpaf.so" > /etc/ap
 
 # phpMyAdmin
 RUN mkdir -p /app/code/phpmyadmin && \
-    curl -L https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-all-languages.tar.gz | tar zxvf - -C /app/code/phpmyadmin --strip-components=1
+    curl -L https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.tar.gz | tar zxvf - -C /app/code/phpmyadmin --strip-components=1
 COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 
 # configure cron
