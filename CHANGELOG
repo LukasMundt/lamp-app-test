@@ -37,3 +37,6 @@
 * Update phpMyAdmin to 5.1.1
 * Enable opcache explicitly
 
+[1.7.0]
+* crontab is now run as root user. This lets commands log to application logs.
+
