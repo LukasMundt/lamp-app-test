@@ -27,9 +27,9 @@ echo "==> Source custom startup script"
 
 [[ ! -f /app/data/crontab ]] && cp /app/code/crontab.template /app/data/crontab
 
-## configure in-container Crontab
-# http://www.gsp.com/cgi-bin/man.cgi?section=5&topic=crontab
-if ! (env; cat /app/data/crontab; echo -e '\nMAILTO=""') | crontab -u www-data -; then
+## configure in-container Crontab - http://www.gsp.com/cgi-bin/man.cgi?section=5&topic=crontab
+# we run as root user so that the cron tasks can redirect properly to the cron's stdout/stderr
+if ! (env; cat /app/data/crontab; echo -e '\nMAILTO=""') | crontab -u root -; then
     echo "==> Error importing crontab. Continuing anyway"
 else
     echo "==> Imported crontab"
