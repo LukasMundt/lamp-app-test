@@ -3,6 +3,16 @@ FROM cloudron/base:3.0.0@sha256:455c70428723e3a823198c57472785437eb6eab082e79b3f
 RUN mkdir -p /app/code
 WORKDIR /app/code
 
+# when external repo is added, apt-get will install the latest in case of conflicting name. apt-cache policy <name> will show what is getting used
+# so the remove of 7.4 is probably superfluous but here for completeness
+RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
+    apt-get autoremove -y && \
+    add-apt-repository --yes ppa:ondrej/php && \
+    apt update && \
+    apt install -y php7.4 php7.4-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,geoip,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php7.4 && \
+    apt install -y php-{date,pear,twig,validate} && \
+    rm -rf /var/cache/apt /var/lib/apt/lists
+
 # configure apache
 # keep the prefork linking below a2enmod since it removes dangling mods-enabled (!)
 # perl kills setlocale() in php - https://bugs.mageia.org/show_bug.cgi?id=25411
@@ -33,7 +43,6 @@ RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
     crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_divisor 100
 
 RUN cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/cli/php.ini
-
 
 RUN ln -s /app/data/php.ini /etc/php/7.4/apache2/conf.d/99-cloudron.ini && \
     ln -s /app/data/php.ini /etc/php/7.4/cli/conf.d/99-cloudron.ini
