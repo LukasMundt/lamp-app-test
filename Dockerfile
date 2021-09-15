@@ -9,9 +9,16 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt-get autoremove -y && \
     add-apt-repository --yes ppa:ondrej/php && \
     apt update && \
+    apt install -y php8.0 php8.0-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php8.0 && \
     apt install -y php7.4 php7.4-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,geoip,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php7.4 && \
     apt install -y php-{date,pear,twig,validate} && \
     rm -rf /var/cache/apt /var/lib/apt/lists
+
+RUN update-alternatives –set php /usr/bin/php7.4 && \
+    update-alternatives –set phar /usr/bin/phar7.4 && \
+    update-alternatives –set phar.phar /usr/bin/phar.phar7.4 && \
+    update-alternatives –set phpize /usr/bin/phpize7.4 && \
+    update-alternatives –set php-config /usr/bin/php-config7.4
 
 # configure apache
 # keep the prefork linking below a2enmod since it removes dangling mods-enabled (!)
@@ -19,7 +26,7 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
 RUN a2disconf other-vhosts-access-log && \
     echo "Listen 80" > /etc/apache2/ports.conf && \
     a2enmod rewrite headers rewrite expires cache php7.4 && \
-    a2dismod perl && \
+    a2dismod perl php8.0 && \
     rm /etc/apache2/sites-enabled/* && \
     sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf && \
     ln -sf /app/data/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf && \
@@ -28,24 +35,27 @@ RUN a2disconf other-vhosts-access-log && \
 COPY apache/ /app/code/apache/
 
 # configure mod_php
-RUN crudini --set /etc/php/7.4/apache2/php.ini PHP upload_max_filesize 64M && \
-    crudini --set /etc/php/7.4/apache2/php.ini PHP post_max_size 64M && \
-    crudini --set /etc/php/7.4/apache2/php.ini PHP memory_limit 128M && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.enable 1 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.enable_cli 1 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.interned_strings_buffer 8 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.max_accelerated_files 10000 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.memory_consumption 128 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.save_comments 1 && \
-    crudini --set /etc/php/7.4/apache2/php.ini opcache opcache.revalidate_freq 60 && \
-    crudini --set /etc/php/7.4/apache2/php.ini Session session.save_path /run/app/sessions && \
-    crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_probability 1 && \
-    crudini --set /etc/php/7.4/apache2/php.ini Session session.gc_divisor 100
+RUN for v in 7.4 8.0; do \
+        crudini --set /etc/php/$v/apache2/php.ini PHP upload_max_filesize 64M && \
+        crudini --set /etc/php/$v/apache2/php.ini PHP post_max_size 64M && \
+        crudini --set /etc/php/$v/apache2/php.ini PHP memory_limit 128M && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.enable 1 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.enable_cli 1 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.interned_strings_buffer 8 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.max_accelerated_files 10000 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.memory_consumption 128 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.save_comments 1 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.revalidate_freq 60 && \
+        crudini --set /etc/php/$v/apache2/php.ini Session session.save_path /run/app/sessions && \
+        crudini --set /etc/php/$v/apache2/php.ini Session session.gc_probability 1 && \
+        crudini --set /etc/php/$v/apache2/php.ini Session session.gc_divisor 100 ; \
+    done
 
-RUN cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/cli/php.ini
-
-RUN ln -s /app/data/php.ini /etc/php/7.4/apache2/conf.d/99-cloudron.ini && \
-    ln -s /app/data/php.ini /etc/php/7.4/cli/conf.d/99-cloudron.ini
+RUN for v in 7.4 8.0; do \
+        cp /etc/php/$v/apache2/php.ini /etc/php/$v/cli/php.ini && \
+        ln -s /app/data/php.ini /etc/php/$v/apache2/conf.d/99-cloudron.ini && \
+        ln -s /app/data/php.ini /etc/php/$v/cli/conf.d/99-cloudron.ini ; \
+    done
 
 # install RPAF module to override HTTPS, SERVER_PORT, HTTP_HOST based on reverse proxy headers
 # https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-16-04-server
@@ -71,6 +81,7 @@ RUN rm -f /etc/cron.d/* /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/*
 
 # ioncube. the extension dir comes from php -i | grep extension_dir
 # extension has to appear first, otherwise will error with "The Loader must appear as the first entry in the php.ini file"
+# ioncube does not seem to have support for 8.0 yet
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
     cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.4.so /usr/lib/php/20190902/ && \
