@@ -5,6 +5,7 @@ WORKDIR /app/code
 
 # when external repo is added, apt-get will install the latest in case of conflicting name. apt-cache policy <name> will show what is getting used
 # so the remove of 7.4 is probably superfluous but here for completeness
+# update-alternatives is explicitly not done because it's a lot of work to update them fo the correct PHP binaries. Instead, call the appropriate binary with version directly
 RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt-get autoremove -y && \
     add-apt-repository --yes ppa:ondrej/php && \
@@ -13,12 +14,6 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt install -y php7.4 php7.4-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,geoip,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php7.4 && \
     apt install -y php-{date,pear,twig,validate} && \
     rm -rf /var/cache/apt /var/lib/apt/lists
-
-RUN update-alternatives –set php /usr/bin/php7.4 && \
-    update-alternatives –set phar /usr/bin/phar7.4 && \
-    update-alternatives –set phar.phar /usr/bin/phar.phar7.4 && \
-    update-alternatives –set phpize /usr/bin/phpize7.4 && \
-    update-alternatives –set php-config /usr/bin/php-config7.4
 
 # configure apache
 # keep the prefork linking below a2enmod since it removes dangling mods-enabled (!)
