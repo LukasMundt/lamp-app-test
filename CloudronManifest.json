@@ -1,6 +1,6 @@
 {
   "id": "lamp.cloudronapp.php74",
-  "title": "LAMP (PHP 7.4)",
+  "title": "LAMP",
   "author": "Cloudron developers",
   "description": "file://DESCRIPTION.md",
   "tagline": "An empty LAMP stack (PHP 7.4, 8.0)",
