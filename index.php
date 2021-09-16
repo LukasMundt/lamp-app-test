@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title> Cloudron LAMP app (PHP 7.4)</title>
+  <title>Cloudron LAMP app (PHP <?php echo PHP_VERSION ?>)</title>
 
   <style>
 
@@ -50,7 +50,7 @@
 
 <br/>
 
-<h1>Cloudron LAMP App (PHP 7.4)</h1>
+<h1>Cloudron LAMP App (PHP <?php echo PHP_VERSION ?>)</h1>
 
 <br/>
 
