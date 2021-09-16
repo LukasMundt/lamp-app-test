@@ -20,12 +20,15 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
 # perl kills setlocale() in php - https://bugs.mageia.org/show_bug.cgi?id=25411
 RUN a2disconf other-vhosts-access-log && \
     echo "Listen 80" > /etc/apache2/ports.conf && \
-    a2enmod rewrite headers rewrite expires cache php7.4 && \
-    a2dismod perl php8.0 && \
+    a2enmod rewrite headers rewrite expires cache && \
+    a2dismod perl && \
     rm /etc/apache2/sites-enabled/* && \
     sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf && \
     ln -sf /app/data/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf && \
-    ln -sf /app/data/apache/app.conf /etc/apache2/sites-enabled/app.conf
+    ln -sf /app/data/apache/app.conf /etc/apache2/sites-enabled/app.conf && \
+    rm /etc/apache2/mods-enabled/php*.conf /etc/apache2/mods-enabled/php*.load && \
+    ln -sf /run/apache2/php.conf /etc/apache2/mods-enabled/php.conf && \
+    ln -sf /run/apache2/php.load /etc/apache2/mods-enabled/php.load
 
 COPY apache/ /app/code/apache/
 

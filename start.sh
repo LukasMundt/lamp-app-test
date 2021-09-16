@@ -15,11 +15,17 @@ else
 fi
 
 if [[ ! -f /app/data/php.ini ]]; then
-    echo -e "; Add custom PHP configuration in this file\n; Settings here are merged with the package's built-in php.ini\n\n" > /app/data/php.ini
+    echo -e "; Add custom PHP configuration in this file\n; Settings here are merged with the package's built-in php.ini; Restart the app for any changes to take effect\n\n" > /app/data/php.ini
 fi
 
 [[ ! -f /app/data/apache/mpm_prefork.conf ]] && cp /app/code/apache/mpm_prefork.conf /app/data/apache/mpm_prefork.conf
 [[ ! -f /app/data/apache/app.conf ]] && cp /app/code/apache/app.conf /app/data/apache/app.conf
+[[ ! -f /app/data/PHP_VERSION ]] && echo -e "; Set the desired PHP version in this file\n; Restart app for changes to take effect;\nPHP_VERSION=7.4\n" > /app/data/PHP_VERSION
+
+readonly php_version=$(sed -ne 's/^PHP_VERSION=\(.*\)$/\1/p' /app/data/PHP_VERSION)
+echo "==> PHP version set to ${php_version}"
+ln -sf /etc/apache2/mods-available/php${php_version}.conf /run/apache2/php.conf
+ln -sf /etc/apache2/mods-available/php${php_version}.load /run/apache2/php.load
 
 # source it so that env vars are persisted
 echo "==> Source custom startup script"
