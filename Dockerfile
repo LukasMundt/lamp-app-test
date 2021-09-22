@@ -14,6 +14,8 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt install -y php-{date,pear,twig,validate} && \
     rm -rf /var/cache/apt /var/lib/apt/lists
 
+RUN curl --fail -L https://getcomposer.org/download/2.1.8/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
+
 # this binaries are not updated with PHP_VERSION since it's a lot of work. but this is specifically done here for compatibility reasons
 # existing 7.4 users might be calling php directly.
 RUN update-alternatives --set php /usr/bin/php7.4 && \
