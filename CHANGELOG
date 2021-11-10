@@ -43,3 +43,7 @@
 [1.8.0]
 * Add support for PHP 8.0. See [docs](https://docs.cloudron.io/apps/lamp/) on how to change the version.
 
+[2.0.0]
+* Breaking change: crontab support has been removed. If you had any cron tasks in `/app/data/crontab`, please move them
+  to the cron section of the app after updating. See https://docs.cloudron.io/apps/#cron for more information.
+
