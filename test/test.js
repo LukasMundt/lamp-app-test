@@ -17,11 +17,8 @@ const execSync = require('child_process').execSync,
     path = require('path'),
     superagent = require('superagent'),
     util = require('util'),
-    webdriver = require('selenium-webdriver');
-
-const by = webdriver.By,
-    until = webdriver.until,
-    Builder = require('selenium-webdriver').Builder;
+    { Builder, By, until } = require('selenium-webdriver'),
+    { Options } = require('selenium-webdriver/chrome');
 
 if (!process.env.USERNAME || !process.env.PASSWORD) {
     console.log('USERNAME and PASSWORD env vars need to be set');
@@ -31,21 +28,16 @@ if (!process.env.USERNAME || !process.env.PASSWORD) {
 describe('Application life cycle test', function () {
     this.timeout(0);
 
-    let server, app, apiEndpoint;
-    const browser = new Builder().forBrowser('chrome').build();
+    let browser, app, apiEndpoint;
     const LOCATION = 'test';
     const TEST_TIMEOUT = 50000;
 
     before(function () {
-        const seleniumJar= require('selenium-server-standalone-jar');
-        const SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
-        server = new SeleniumServer(seleniumJar.path, { port: 4444 });
-        server.start();
+        browser = new Builder().forBrowser('chrome').setChromeOptions(new Options().windowSize({ width: 1280, height: 1024 })).build();
     });
 
     after(function () {
         browser.quit();
-        server.stop();
     });
 
     async function waitForElement(elem) {
@@ -63,19 +55,19 @@ describe('Application life cycle test', function () {
 
     async function welcomePage() {
         await browser.get('https://' + app.fqdn);
-        await waitForElement(by.xpath('//*[contains(text(), "Cloudron LAMP App")]'));
+        await waitForElement(By.xpath('//*[contains(text(), "Cloudron LAMP App")]'));
     }
 
     async function uploadedFileExists() {
         await browser.get('https://' + app.fqdn + '/test.php');
-        await waitForElement(by.xpath('//*[text()="this works"]'));
-        await waitForElement(by.xpath('//*[text()="' + app.fqdn + '"]'));
+        await waitForElement(By.xpath('//*[text()="this works"]'));
+        await waitForElement(By.xpath('//*[text()="' + app.fqdn + '"]'));
     }
 
     async function checkIonCube() {
         await browser.get('https://' + app.fqdn + '/test.php');
-        await waitForElement(by.xpath('//a[contains(text(), "ionCube Loader")]'));
-        // return waitForElement(by.xpath('//*[contains(text(), "Intrusion&nbsp;Protection&nsbp;from&nbsp;ioncube24.com")]'));
+        await waitForElement(By.xpath('//a[contains(text(), "ionCube Loader")]'));
+        // return waitForElement(By.xpath('//*[contains(text(), "Intrusion&nbsp;Protection&nsbp;from&nbsp;ioncube24.com")]'));
     }
 
     async function checkPhpMyAdmin() {
@@ -105,7 +97,7 @@ describe('Application life cycle test', function () {
 
     async function checkPhpVersion(version) {
         await browser.get('https://' + app.fqdn + '/test.php');
-        await waitForElement(by.xpath(`//*[contains(text(), "PHP Version:${version}")]`));
+        await waitForElement(By.xpath(`//*[contains(text(), "PHP Version:${version}")]`));
     }
 
     xit('build app', function () {
