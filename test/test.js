@@ -97,25 +97,6 @@ describe('Application life cycle test', function () {
         }
     }
 
-    async function checkCron() {
-        this.timeout(60000 * 2);
-
-        fs.writeFileSync('/tmp/crontab', '* * * * * echo -n "$CLOUDRON_MYSQL_HOST" > /app/data/public/cron\n', 'utf8');
-        execSync(`cloudron push --app ${app.id} /tmp/crontab /app/data/crontab`);
-        fs.unlinkSync('/tmp/crontab');
-
-        execSync(`cloudron restart --app ${app.id}`);
-
-        console.log('Waiting for crontab to trigger');
-
-        await delay(60000); // give crontab a minute to trigger
-
-        const result = await superagent.get('https://' + app.fqdn + '/cron').ok(() => true);
-
-        if (result.status !== 200) throw new Error('Expecting 200, got ' + result.status);
-        if (result.text !== 'mysql') throw new Error('Unexpected text: ' + result.text);
-    }
-
     async function changePhp(version) {
         fs.writeFileSync('/tmp/PHP_VERSION', `PHP_VERSION=${version}\n`, 'utf8');
         execSync(`cloudron push --app ${app.id} /tmp/PHP_VERSION /app/data/PHP_VERSION`);
@@ -151,7 +132,6 @@ describe('Application life cycle test', function () {
     it('can get uploaded file', uploadedFileExists);
     it('can access ioncube', checkIonCube);
     it('can access phpmyadmin', checkPhpMyAdmin);
-    it('executes cron tasks', checkCron);
 
     it('can restart app', () => execSync('cloudron restart'));
     it('can get uploaded file', uploadedFileExists);

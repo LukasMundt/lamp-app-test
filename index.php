@@ -79,18 +79,5 @@
   via SFTP or the File Manager.
 </p>
 
-<h2>Cron</h2>
-<p>
-  Put a file called <code>crontab</code> into the directory <code>/app/data</code> and it will be picked up at next app restart.
-  It has to be in the cron syntax without username and must end with a newline.
-  For example, the following crontab updates feeds every hour:
-</p>
-<pre>
-0 * * * * php /app/code/update.php --feeds
-</pre>
-<p>
-  Commands are executed as the user www-data. Generate cron patterns via <a href="http://www.crontabgenerator.com/">crontabgenerator</a>.
-</p>
-
 </body>
 </html>

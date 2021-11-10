@@ -82,11 +82,6 @@ RUN mkdir -p /app/code/phpmyadmin && \
     curl -L https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.tar.gz | tar zxvf - -C /app/code/phpmyadmin --strip-components=1
 COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 
-# configure cron
-RUN rm -rf /var/spool/cron && ln -s /run/cron /var/spool/cron
-# clear out the crontab
-RUN rm -f /etc/cron.d/* /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/* /etc/cron.weekly/* && truncate -s0 /etc/crontab
-
 # ioncube. the extension dir comes from php -i | grep extension_dir
 # extension has to appear first, otherwise will error with "The Loader must appear as the first entry in the php.ini file"
 # ioncube does not seem to have support for 8.0 yet
@@ -97,12 +92,8 @@ RUN mkdir /tmp/ioncube && \
     echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/apache2/conf.d/00-ioncube.ini && \
     echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/cli/conf.d/00-ioncube.ini
 
-# configure supervisor
-ADD supervisor/ /etc/supervisor/conf.d/
-RUN sed -e 's,^logfile=.*$,logfile=/run/supervisord.log,' -i /etc/supervisor/supervisord.conf
-
 # add code
-COPY start.sh index.php crontab.template credentials.template phpmyadmin_login.template /app/code/
+COPY start.sh index.php credentials.template phpmyadmin_login.template /app/code/
 
 # lock www-data but allow su - www-data to work
 RUN passwd -l www-data && usermod --shell /bin/bash --home /app/data www-data

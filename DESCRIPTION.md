@@ -5,10 +5,6 @@ This app supports <upstream>PHP 7.4 and 8.0</upstream>.
 LAMP is an archetypal model of web service stacks, named as an acronym of the names of its original four open-source components: the Linux operating system,
 the Apache HTTP Server, the MySQL relational database management system (RDBMS), and the PHP programming language.
 
-### Cron
-
-This app supports running one or more cronjobs. The jobs are specified using the standard crontab syntax.
-
 ## ionCube
 
 ionCube is a PHP module extension that loads encrypted PHP files and speeds up webpages. ionCube is pre-installed

@@ -2,7 +2,7 @@
 
 set -eu
 
-mkdir -p /app/data/public /run/apache2 /run/cron /run/app/sessions /app/data/apache
+mkdir -p /app/data/public /run/apache2 /run/app/sessions /app/data/apache
 
 # generate files if neither index.* or .htaccess
 if [[ -z "$(ls -A /app/data/public)" ]]; then
@@ -31,15 +31,7 @@ ln -sf /etc/apache2/mods-available/php${php_version}.load /run/apache2/php.load
 echo "==> Source custom startup script"
 [[ -f /app/data/run.sh ]] && source /app/data/run.sh
 
-[[ ! -f /app/data/crontab ]] && cp /app/code/crontab.template /app/data/crontab
-
-## configure in-container Crontab - http://www.gsp.com/cgi-bin/man.cgi?section=5&topic=crontab
-# we run as root user so that the cron tasks can redirect properly to the cron's stdout/stderr
-if ! (env; cat /app/data/crontab; echo -e '\nMAILTO=""') | crontab -u root -; then
-    echo "==> Error importing crontab. Continuing anyway"
-else
-    echo "==> Imported crontab"
-fi
+[[ -f /app/data/crontab ]] && echo -e "\n\033[0;31mWARNING: crontab support has been removed. Please move cron tasks to the cron section of the app. See https://docs.cloudron.io/apps/#cron for more information.\033[0m\n"
 
 # phpMyAdmin auth file
 if [[ ! -f /app/data/.phpmyadminauth ]]; then
@@ -84,5 +76,7 @@ fi
 chown -R www-data:www-data /app/data /run/apache2 /run/app /tmp
 
 echo "==> Starting Lamp stack"
-rm -f "/run/apache2/apache2.pid"
-exec /usr/bin/supervisord --configuration /etc/supervisor/supervisord.conf --nodaemon -i Lamp
+APACHE_CONFDIR="" source /etc/apache2/envvars
+rm -f "${APACHE_PID_FILE}"
+exec /usr/sbin/apache2 -DFOREGROUND
+
