@@ -5,13 +5,13 @@
 /* global describe:false */
 /* global before:false */
 /* global after:false */
+/* global xit */
 
 'use strict';
 
 require('chromedriver');
 
-const delay = require('delay'),
-    execSync = require('child_process').execSync,
+const execSync = require('child_process').execSync,
     expect = require('expect.js'),
     fs = require('fs'),
     path = require('path'),
