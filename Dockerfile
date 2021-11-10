@@ -52,6 +52,7 @@ RUN for v in 7.4 8.0; do \
         crudini --set /etc/php/$v/apache2/php.ini opcache opcache.max_accelerated_files 10000 && \
         crudini --set /etc/php/$v/apache2/php.ini opcache opcache.memory_consumption 128 && \
         crudini --set /etc/php/$v/apache2/php.ini opcache opcache.save_comments 1 && \
+        crudini --set /etc/php/$v/apache2/php.ini opcache opcache.validate_timestamps 1 && \
         crudini --set /etc/php/$v/apache2/php.ini opcache opcache.revalidate_freq 60 && \
         crudini --set /etc/php/$v/apache2/php.ini Session session.save_path /run/app/sessions && \
         crudini --set /etc/php/$v/apache2/php.ini Session session.gc_probability 1 && \
