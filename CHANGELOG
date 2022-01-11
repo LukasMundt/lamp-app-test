@@ -47,3 +47,6 @@
 * Breaking change: crontab support has been removed. If you had any cron tasks in `/app/data/crontab`, please move them
   to the cron section of the app after updating. See https://docs.cloudron.io/apps/#cron for more information.
 
+[2.0.1]
+* Update base image to 3.2.0
+
