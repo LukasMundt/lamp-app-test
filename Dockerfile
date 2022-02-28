@@ -14,7 +14,8 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt install -y php-{date,pear,twig,validate} && \
     rm -rf /var/cache/apt /var/lib/apt/lists
 
-RUN curl --fail -L https://getcomposer.org/download/2.1.8/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
+# https://getcomposer.org/download/
+RUN curl --fail -L https://getcomposer.org/download/2.2.7/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
 # this binaries are not updated with PHP_VERSION since it's a lot of work. but this is specifically done here for compatibility reasons
 # existing 7.4 users might be calling php directly.
@@ -77,9 +78,9 @@ RUN mkdir /app/code/rpaf && \
 # configure rpaf
 RUN echo "LoadModule rpaf_module /usr/lib/apache2/modules/mod_rpaf.so" > /etc/apache2/mods-available/rpaf.load && a2enmod rpaf
 
-# phpMyAdmin
+# phpMyAdmin (https://www.phpmyadmin.net/files/)
 RUN mkdir -p /app/code/phpmyadmin && \
-    curl -L https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.tar.gz | tar zxvf - -C /app/code/phpmyadmin --strip-components=1
+    curl -L https://files.phpmyadmin.net/phpMyAdmin/5.1.3/phpMyAdmin-5.1.3-all-languages.tar.gz | tar zxvf - -C /app/code/phpmyadmin --strip-components=1
 COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 
 # ioncube. the extension dir comes from php -i | grep extension_dir
