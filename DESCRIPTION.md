@@ -1,5 +1,3 @@
-This app supports <upstream>PHP 7.4 and 8.0</upstream>.
-
 ## Cloudron LAMP Stack
 
 LAMP is an archetypal model of web service stacks, named as an acronym of the names of its original four open-source components: the Linux operating system,
