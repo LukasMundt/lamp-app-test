@@ -190,7 +190,7 @@ describe('Application life cycle test', function () {
     it('can get uploaded file', uploadedFileExists);
     it('can access phpmyadmin', checkPhpMyAdmin);
     it('can access ioncube', checkIonCube);
-    it('can check PHP version', checkPhpVersion.bind(null, '7.4'));
+    it('can check PHP version', checkPhpVersion.bind(null, '8.0'));
 
     it('uninstall app', function () {
         execSync(`cloudron uninstall --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
