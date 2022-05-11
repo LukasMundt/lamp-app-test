@@ -58,3 +58,6 @@
 * Add PHP 8.1 as an option
 * Change default PHP version to 8.0 (only for new installations)
 
+[2.2.0]
+* Update phpMyAdmin to 5.2.0
+
