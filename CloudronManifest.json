@@ -5,7 +5,7 @@
   "description": "file://DESCRIPTION.md",
   "tagline": "An empty LAMP stack (PHP 7.4, 8.0, 8.1)",
   "version": "2.2.0",
-  "upstreamVersion": "PHP - 7.0, 8.0, 8.1",
+  "upstreamVersion": "PHP - 7.4, 8.0, 8.1",
   "healthCheckPath": "/",
   "httpPort": 80,
   "manifestVersion": 2,
