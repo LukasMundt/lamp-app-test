@@ -20,11 +20,11 @@ RUN curl --fail -L https://getcomposer.org/download/2.2.7/composer.phar -o /usr/
 
 # this binaries are not updated with PHP_VERSION since it's a lot of work. but this is specifically done here for compatibility reasons
 # existing 7.4 users might be calling php directly.
-RUN update-alternatives --set php /usr/bin/php7.4 && \
-    update-alternatives --set phar /usr/bin/phar7.4 && \
-    update-alternatives --set phar.phar /usr/bin/phar.phar7.4 && \
-    update-alternatives --set phpize /usr/bin/phpize7.4 && \
-    update-alternatives --set php-config /usr/bin/php-config7.4
+RUN update-alternatives --set php /usr/bin/php8.1 && \
+    update-alternatives --set phar /usr/bin/phar8.1 && \
+    update-alternatives --set phar.phar /usr/bin/phar.phar8.1 && \
+    update-alternatives --set phpize /usr/bin/phpize8.1 && \
+    update-alternatives --set php-config /usr/bin/php-config8.1
 
 # configure apache
 # keep the prefork linking below a2enmod since it removes dangling mods-enabled (!)
@@ -89,10 +89,10 @@ COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 # ioncube does not seem to have support for PHP 8 yet
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
-    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.4.so /usr/lib/php/20190902/ && \
+    cp /tmp/ioncube/ioncube/ioncube_loader_lin_8.1.so /usr/lib/php/20190902/ && \
     rm -rf /tmp/ioncube && \
-    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/apache2/conf.d/00-ioncube.ini && \
-    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/cli/conf.d/00-ioncube.ini
+    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/apache2/conf.d/00-ioncube.ini && \
+    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/cli/conf.d/00-ioncube.ini
 
 # add code
 COPY start.sh index.php credentials.template phpmyadmin_login.template /app/code/
