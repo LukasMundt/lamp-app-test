@@ -64,3 +64,8 @@
 [2.2.1]
 * Fix description and upstream version in manifest
 
+[3.0.0]
+* Change default PHP version to 8.1 (only for new installations).
+* PHP 7.4 is reaching [EOL](https://www.php.net/supported-versions.php) and won't get security updates anymore.
+* New logo
+
