@@ -18,8 +18,7 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
 # https://getcomposer.org/download/
 RUN curl --fail -L https://getcomposer.org/download/2.2.7/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
-# this binaries are not updated with PHP_VERSION since it's a lot of work. but this is specifically done here for compatibility reasons
-# existing 7.4 users might be calling php directly.
+# this binaries are not updated with PHP_VERSION since it's a lot of work
 RUN update-alternatives --set php /usr/bin/php8.1 && \
     update-alternatives --set phar /usr/bin/phar8.1 && \
     update-alternatives --set phar.phar /usr/bin/phar.phar8.1 && \
@@ -86,7 +85,7 @@ COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 
 # ioncube. the extension dir comes from php -i | grep extension_dir
 # extension has to appear first, otherwise will error with "The Loader must appear as the first entry in the php.ini file"
-# ioncube does not seem to have support for PHP 8 yet
+# ioncube does not seem to have support for PHP 8 yet (https://blog.ioncube.com/2022/08/12/ioncube-php-8-1-support-faq-were-almost-ready/)
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
     cp /tmp/ioncube/ioncube/ioncube_loader_lin_8.1.so /usr/lib/php/20190902/ && \
