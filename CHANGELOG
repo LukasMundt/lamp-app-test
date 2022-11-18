@@ -69,3 +69,6 @@
 * PHP 7.4 is reaching [EOL](https://www.php.net/supported-versions.php) and won't get security updates anymore.
 * New logo
 
+[3.0.1]
+* Fix path to ioncube loader
+
