@@ -72,3 +72,6 @@
 [3.0.1]
 * Fix path to ioncube loader
 
+[3.0.2]
+* Update base image to 4.0.0
+
