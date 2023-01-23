@@ -88,8 +88,11 @@ COPY phpmyadmin-config.inc.php /app/code/phpmyadmin/config.inc.php
 # ioncube does not seem to have support for PHP 8 yet (https://blog.ioncube.com/2022/08/12/ioncube-php-8-1-support-faq-were-almost-ready/)
 RUN mkdir /tmp/ioncube && \
     curl http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz | tar zxvf - -C /tmp/ioncube && \
+    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.4.so /usr/lib/php/20190902/ && \
     cp /tmp/ioncube/ioncube/ioncube_loader_lin_8.1.so /usr/lib/php/20210902/ && \
     rm -rf /tmp/ioncube && \
+    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/apache2/conf.d/00-ioncube.ini && \
+    echo "zend_extension=/usr/lib/php/20190902/ioncube_loader_lin_7.4.so" > /etc/php/7.4/cli/conf.d/00-ioncube.ini && \
     echo "zend_extension=/usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/apache2/conf.d/00-ioncube.ini && \
     echo "zend_extension=/usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/cli/conf.d/00-ioncube.ini
 
