@@ -75,3 +75,6 @@
 [3.0.2]
 * Update base image to 4.0.0
 
+[3.0.3]
+* Make ioncube loader work with 7.4 as well
+
