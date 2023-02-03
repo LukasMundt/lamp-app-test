@@ -78,3 +78,6 @@
 [3.0.3]
 * Make ioncube loader work with 7.4 as well
 
+[3.1.0]
+* Enable LDAP modules in apache
+
