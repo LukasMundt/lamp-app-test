@@ -128,7 +128,7 @@ describe('Application life cycle test', function () {
 
     it('can restart app', () => execSync('cloudron restart'));
     it('can get uploaded file', uploadedFileExists);
-    xit('can access ioncube', checkIonCube);
+    it('can access ioncube', checkIonCube);
     it('can access phpmyadmin', checkPhpMyAdmin);
 
     it('can change PHP version', changePhp.bind(null, '8.0'));

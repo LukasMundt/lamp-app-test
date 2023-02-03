@@ -13,13 +13,13 @@
     "expect.js": "^0.3.1",
     "mkdirp": "^2.1.3",
     "mocha": "^10.2.0",
-    "rimraf": "^4.1.1",
-    "superagent": "^8.0.8"
+    "rimraf": "^4.1.2",
+    "superagent": "^8.0.9"
   },
   "dependencies": {
     "chromedriver": "^109.0.0",
     "selenium-server-standalone-jar": "^4.7.1",
-    "selenium-webdriver": "^4.7.1",
-    "superagent": "^8.0.8"
+    "selenium-webdriver": "^4.8.0",
+    "superagent": "^8.0.9"
   }
 }
