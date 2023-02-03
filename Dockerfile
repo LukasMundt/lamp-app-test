@@ -30,7 +30,7 @@ RUN update-alternatives --set php /usr/bin/php8.1 && \
 # perl kills setlocale() in php - https://bugs.mageia.org/show_bug.cgi?id=25411
 RUN a2disconf other-vhosts-access-log && \
     echo "Listen 80" > /etc/apache2/ports.conf && \
-    a2enmod rewrite headers rewrite expires cache && \
+    a2enmod rewrite headers rewrite expires cache ldap authnz_ldap && \
     a2dismod perl && \
     rm /etc/apache2/sites-enabled/* && \
     sed -e 's,^ErrorLog.*,ErrorLog "|/bin/cat",' -i /etc/apache2/apache2.conf && \
