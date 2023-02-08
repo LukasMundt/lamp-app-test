@@ -81,3 +81,5 @@
 [3.1.0]
 * Enable LDAP modules in apache
 
+[3.1.1]
+* Update phpMyAdmin to 5.2.1
