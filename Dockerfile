@@ -9,6 +9,7 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     apt-get autoremove -y && \
     add-apt-repository --yes ppa:ondrej/php && \
     apt update && \
+    apt install -y php8.2 php8.2-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php8.2 && \
     apt install -y php8.1 php8.1-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php8.1 && \
     apt install -y php8.0 php8.0-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php8.0 && \
     apt install -y php7.4 php7.4-{apcu,bcmath,bz2,cgi,cli,common,curl,dba,dev,enchant,fpm,gd,geoip,gmp,gnupg,imagick,imap,interbase,intl,ldap,mailparse,mbstring,mysql,odbc,opcache,pgsql,phpdbg,pspell,readline,redis,snmp,soap,sqlite3,sybase,tidy,uuid,xml,xmlrpc,xsl,zip,zmq} libapache2-mod-php7.4 && \
@@ -43,7 +44,7 @@ RUN a2disconf other-vhosts-access-log && \
 COPY apache/ /app/code/apache/
 
 # configure mod_php
-RUN for v in 7.4 8.0 8.1; do \
+RUN for v in 7.4 8.0 8.1 8.2; do \
         crudini --set /etc/php/$v/apache2/php.ini PHP upload_max_filesize 64M && \
         crudini --set /etc/php/$v/apache2/php.ini PHP post_max_size 64M && \
         crudini --set /etc/php/$v/apache2/php.ini PHP memory_limit 128M && \
@@ -60,7 +61,7 @@ RUN for v in 7.4 8.0 8.1; do \
         crudini --set /etc/php/$v/apache2/php.ini Session session.gc_divisor 100 ; \
     done
 
-RUN for v in 7.4 8.0 8.1; do \
+RUN for v in 7.4 8.0 8.1 8.2; do \
         cp /etc/php/$v/apache2/php.ini /etc/php/$v/cli/php.ini && \
         ln -s /app/data/php.ini /etc/php/$v/apache2/conf.d/99-cloudron.ini && \
         ln -s /app/data/php.ini /etc/php/$v/cli/conf.d/99-cloudron.ini ; \
