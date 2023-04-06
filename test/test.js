@@ -131,9 +131,9 @@ describe('Application life cycle test', function () {
     it('can access ioncube', checkIonCube);
     it('can access phpmyadmin', checkPhpMyAdmin);
 
-    it('can change PHP version', changePhp.bind(null, '8.0'));
+    it('can change PHP version', changePhp.bind(null, '8.2'));
     it('can restart app', () => execSync('cloudron restart'));
-    it('can check PHP version', checkPhpVersion.bind(null, '8.0'));
+    it('can check PHP version', checkPhpVersion.bind(null, '8.2'));
 
     it('backup app', function () {
         execSync(`cloudron backup create --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
@@ -149,7 +149,7 @@ describe('Application life cycle test', function () {
     });
 
     it('can get uploaded file', uploadedFileExists);
-    it('can check PHP version', checkPhpVersion.bind(null, '8.0'));
+    it('can check PHP version', checkPhpVersion.bind(null, '8.2'));
 
     it('move to different location', function () {
         browser.manage().deleteAllCookies();
@@ -161,7 +161,7 @@ describe('Application life cycle test', function () {
 
     it('can get uploaded file', uploadedFileExists);
     it('can access phpmyadmin', checkPhpMyAdmin);
-    it('can check PHP version', checkPhpVersion.bind(null, '8.0'));
+    it('can check PHP version', checkPhpVersion.bind(null, '8.2'));
 
     it('uninstall app', function () {
         execSync(`cloudron uninstall --app ${app.id}`, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
@@ -190,7 +190,7 @@ describe('Application life cycle test', function () {
     });
     it('can get uploaded file', uploadedFileExists);
     it('can access phpmyadmin', checkPhpMyAdmin);
-    xit('can access ioncube', checkIonCube);
+    it('can access ioncube', checkIonCube);
     it('can check PHP version', checkPhpVersion.bind(null, '8.1'));
 
     it('uninstall app', function () {
