@@ -11,15 +11,15 @@
   "devDependencies": {
     "ejs": "^3.1.9",
     "expect.js": "^0.3.1",
-    "mkdirp": "^2.1.6",
+    "mkdirp": "^3.0.1",
     "mocha": "^10.2.0",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.1",
     "superagent": "^8.0.9"
   },
   "dependencies": {
-    "chromedriver": "^111.0.0",
+    "chromedriver": "^113.0.0",
     "selenium-server-standalone-jar": "^4.7.1",
-    "selenium-webdriver": "^4.8.2",
+    "selenium-webdriver": "^4.9.2",
     "superagent": "^8.0.9"
   }
 }
