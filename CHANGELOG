@@ -90,3 +90,6 @@
 [3.2.1]
 * Update PHP versions - PHP 8.1.18 and PHP 8.2.6
 
+[3.3.0]
+* Enable proxy module in apache
+
