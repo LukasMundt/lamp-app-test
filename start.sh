@@ -55,10 +55,10 @@ sed -e "s,\bMYSQL_HOST\b,${CLOUDRON_MYSQL_HOST}," \
     -e "s,\bMAIL_SMTP_PASSWORD\b,${CLOUDRON_MAIL_SMTP_PASSWORD}," \
     -e "s,\bMAIL_FROM\b,${CLOUDRON_MAIL_FROM}," \
     -e "s,\bMAIL_DOMAIN\b,${CLOUDRON_MAIL_DOMAIN}," \
-    -e "s,\bREDIS_HOST\b,${CLOUDRON_REDIS_HOST}," \
-    -e "s,\bREDIS_PORT\b,${CLOUDRON_REDIS_PORT}," \
-    -e "s,\bREDIS_PASSWORD\b,${CLOUDRON_REDIS_PASSWORD}," \
-    -e "s,\bREDIS_URL\b,${CLOUDRON_REDIS_URL}," \
+    -e "s,\bREDIS_HOST\b,${CLOUDRON_REDIS_HOST:-NA}," \
+    -e "s,\bREDIS_PORT\b,${CLOUDRON_REDIS_PORT:-NA}," \
+    -e "s,\bREDIS_PASSWORD\b,${CLOUDRON_REDIS_PASSWORD:-NA}," \
+    -e "s,\bREDIS_URL\b,${CLOUDRON_REDIS_URL:-NA}," \
     /app/code/credentials.template > /app/data/credentials.txt
 
 # older installs did not have LDAP and the current version does not have optionalSso
