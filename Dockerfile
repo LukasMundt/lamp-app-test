@@ -17,7 +17,7 @@ RUN apt-get remove -y php-* php7.4-* libapache2-mod-php7.4 && \
     rm -rf /var/cache/apt /var/lib/apt/lists
 
 # https://getcomposer.org/download/
-RUN curl --fail -L https://getcomposer.org/download/2.2.7/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
+RUN curl --fail -L https://getcomposer.org/download/2.6.5/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
 # this binaries are not updated with PHP_VERSION since it's a lot of work
 RUN update-alternatives --set php /usr/bin/php8.1 && \
