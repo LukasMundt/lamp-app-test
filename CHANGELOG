@@ -93,3 +93,6 @@
 [3.3.0]
 * Enable proxy module in apache
 
+[3.4.0]
+* Update base image to 4.2.0
+
