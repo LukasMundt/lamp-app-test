@@ -17,7 +17,7 @@
     "superagent": "^8.1.2"
   },
   "dependencies": {
-    "chromedriver": "^117.0.3",
+    "chromedriver": "^118.0.0",
     "selenium-server-standalone-jar": "^4.14.0",
     "selenium-webdriver": "^4.14.0",
     "superagent": "^8.1.2"
