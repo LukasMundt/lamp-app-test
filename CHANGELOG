@@ -96,3 +96,6 @@
 [3.4.0]
 * Update base image to 4.2.0
 
+[3.4.1]
+* Enable apache wstunnel module
+
