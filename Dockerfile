@@ -97,8 +97,25 @@ RUN mkdir /tmp/ioncube && \
     echo "zend_extension=/usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/apache2/conf.d/00-ioncube.ini && \
     echo "zend_extension=/usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/cli/conf.d/00-ioncube.ini
 
+
+# RUN mkdir whisper
+# WORKDIR /app/code/whisper
+# # install openai whisper
+# RUN pip install -U openai-whisper
+
+# # install ffmpeg
+# RUN apt install ffmpeg
+
+# # install rust
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -y | sh
+
+# RUN pip install setuptools-rust
+
+# WORKDIR /app/code
 # add code
-COPY start.sh index.php credentials.template phpmyadmin_login.template /app/code/
+WORKDIR /app/code
+ADD start.sh /app/code/
+COPY index.php credentials.template phpmyadmin_login.template /app/code/
 
 # lock www-data but allow su - www-data to work
 RUN passwd -l www-data && usermod --shell /bin/bash --home /app/data www-data

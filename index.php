@@ -50,7 +50,7 @@
 
 <br/>
 
-<h1>Cloudron LAMP App (PHP <?php echo PHP_VERSION ?>)</h1>
+<h1>Cloudron Whisper App (PHP <?php echo PHP_VERSION ?>)</h1>
 
 <br/>
 
